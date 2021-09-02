@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="xyz.yurihentai.映射.用户信息映射">
+
+    <!-- 拼接参数的方式 -->
+    <!--
+        #{key}：预编译到sql中，安全
+        ${key}：作为字符串拼接到sql中，有被sql注入攻击的风险
+    -->
+    <select id="查找" resultType="用户信息">
+        SELECT 用户编号, 姓名, 性别, 年龄, 生日, 身份证号, 创建时间, 更新时间
+        FROM 用户信息表
+        WHERE 用户编号 = #{用户编号} and 是否删除 = 0
+    </select>
+
+    <insert id="新增" parameterType="用户信息" useGeneratedKeys="true" keyProperty="用户编号" databaseId="mysql">
+        INSERT INTO 用户信息表(用户编号, 姓名, 性别, 年龄, 生日, 身份证号, 创建时间)
+        VALUES(#{用户编号}, #{姓名}, #{性别}, #{年龄}, #{生日}, #{身份证号}, #{创建时间})
+    </insert>
+    <insert id="新增" parameterType="用户信息" databaseId="oracle">
+        INSERT INTO 用户信息表(用户编号, 姓名, 性别, 年龄, 生日, 身份证号, 创建时间)
+        VALUES(#{用户编号}, #{姓名}, #{性别}, #{年龄}, to_date(#{生日},'yyyy-mm-dd hh24:mi:ss'), #{身份证号}, to_date(#{创建时间},'yyyy-mm-dd hh24:mi:ss'))
+    </insert>
+
+    <update id="更新" parameterType="用户信息" databaseId="mysql">
+        UPDATE 用户信息表
+        SET 姓名 = #{姓名}, 性别 = #{性别}, 年龄 = #{年龄},
+            生日 = #{生日}, 身份证号 = #{身份证号}, 更新时间 = #{更新时间}
+        WHERE 用户编号 = #{用户编号}
+    </update>
+    <update id="更新" parameterType="用户信息" databaseId="oracle">
+        UPDATE 用户信息表
+        SET 姓名 = #{姓名}, 性别 = #{性别}, 年龄 = #{年龄}, 身份证号 = #{身份证号},
+            生日 = to_date(#{生日},'yyyy-mm-dd hh24:mi:ss'), 更新时间 = to_date(#{更新时间},'yyyy-mm-dd hh24:mi:ss')
+        WHERE 用户编号 = #{用户编号}
+    </update>
+
+    <update id="删除" parameterType="String">
+        UPDATE 用户信息表
+        SET 是否删除 = 1
+        WHERE 用户编号 = #{用户编号}
+    </update>
+
+    <delete id="真删" parameterType="String">
+        DELETE FROM 用户信息表
+        WHERE 用户编号 = #{用户编号}
+    </delete>
+
+</mapper>

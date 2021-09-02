@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+           http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+>
+    <bean id="org.yuri" class="xyz.yurihentai.bean.Person" scope="prototype" init-method="init" destroy-method="destroy">
+        <property name="name" value="Yuri"/>
+        <property name="hobby" ref="hobby"/>
+        <property name="relation" ref="relation"/>
+    </bean>
+    <!--    <bean id="hello" class="org.org.yuri.bean.Hello" scope="prototype" p:name="Yuri"></bean>-->
+    <bean class="xyz.yurihentai.handler.MyPostProcessor"/>
+
+    <bean id="factoryBean" class="xyz.yurihentai.bean.PersonFactoryBean" init-method="init" destroy-method="destroy"/>
+
+    <util:list id="hobby">
+        <value>手コキ</value>
+        <value>オナニー</value>
+        <value>雷普</value>
+    </util:list>
+
+    <util:map id="relation">
+        <entry>
+            <key>
+                <value>mother</value>
+            </key>
+            <ref bean="mother"/>
+        </entry>
+        <entry>
+            <key>
+                <value>sister</value>
+            </key>
+            <ref bean="sister"/>
+        </entry>
+        <entry>
+            <key>
+                <value>wife</value>
+            </key>
+            <ref bean="wife"/>
+        </entry>
+        <entry key="daughter" value-ref="daughter"/>
+    </util:map>
+
+    <bean id="daughter" class="xyz.yurihentai.bean.Person" p:name="daughter" init-method="init" destroy-method="destroy"/>
+    <bean id="wife" class="xyz.yurihentai.bean.Person" p:name="wife" init-method="init" destroy-method="destroy"/>
+    <bean id="sister" class="xyz.yurihentai.bean.Person" p:name="sister" init-method="init" destroy-method="destroy"/>
+    <bean id="mother" class="xyz.yurihentai.bean.Person" p:name="mother" init-method="init" destroy-method="destroy"/>
+
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="jdbcUrl"
+                  value="jdbc:mysql://localhost:3306/Yuri?serverTimezone=UTC&amp;useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=true"/>
+        <property name="user" value="root"/>
+        <property name="password" value="Yuri"/>
+    </bean>
+
+    <!--    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">-->
+    <!--        <property name="driverClass" value="${jdbc.driverClass}"/>-->
+    <!--        <property name="jdbcUrl" value="${jdbc.jdbcUrl}"/>-->
+    <!--        <property name="user" value="${jdbc.user}"/>-->
+    <!--        <property name="password" value="${jdbc.password}"/>-->
+    <!--    </bean>-->
+    <!--    <context:property-placeholder location="dataSource.properties"/>-->
+</beans>

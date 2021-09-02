@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+    <!--
+        标签必须按顺序写  否则会报错
+        properties → settings → typeAliases → typeHandlers → objectFactory → objectWrapperFactory → 
+        reflectorFactory → plugins → environments → databaseIdProvider → mappers
+    -->
+    <!-- 中文属性名无法被识别  -->
+    <properties resource="db.properties"/>
+
+    <settings>
+        <setting name="cacheEnabled" value="true"/>
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="multipleResultSetsEnabled" value="true"/>
+        <setting name="useColumnLabel" value="true"/>
+        <setting name="useGeneratedKeys" value="false"/>
+        <setting name="autoMappingBehavior" value="PARTIAL"/>
+        <setting name="autoMappingUnknownColumnBehavior" value="WARNING"/>
+        <setting name="defaultExecutorType" value="SIMPLE"/>
+        <setting name="defaultStatementTimeout" value="25"/>
+        <setting name="defaultFetchSize" value="100"/>
+        <setting name="safeRowBoundsEnabled" value="false"/>
+        <setting name="mapUnderscoreToCamelCase" value="true"/><!-- 将下划线命名映射为驼峰命名 -->
+        <setting name="localCacheScope" value="SESSION"/>
+        <setting name="jdbcTypeForNull" value="OTHER"/>
+        <setting name="lazyLoadTriggerMethods"
+                 value="equals,clone,hashCode,toString"/>
+    </settings>
+
+    <typeAliases>
+        <typeAlias type="xyz.yurihentai.实体类.用户" alias="用户"/>
+        <typeAlias type="xyz.yurihentai.实体类.用户信息" alias="用户信息"/>
+        <typeAlias type="xyz.yurihentai.枚举.性别枚举" alias="性别枚举"/>
+        <typeAlias type="xyz.yurihentai.处理器.Mybatis类型处理器.性别枚举处理器" alias="性别枚举处理器"/>
+        <!-- <package name="com.yuri"/>--> <!-- 为这个包下的所有类创建别名  如com.yuri.UserInfo别名是userInfo-->
+    </typeAliases>
+
+    <typeHandlers>
+        <!-- 写在这里表示对所有javaType进行处理
+            也可以写在其他地方：
+                1、mapper.xml 传递属性参数的位置 如：#{性别,handler=性别枚举处理器} 仅在当前sql生效
+                2、mapper.xml 定义resultmap时  <result column="性别" jdbcType="TINYINT" javaType="性别枚举" typeHandler=“性别枚举处理器"/>  仅在使用到这个resultMap的SQL生效
+         -->
+        <typeHandler javaType="性别枚举" jdbcType="TINYINT" handler="性别枚举处理器"/>
+    </typeHandlers>
+
+    <!-- 数据库连接环境的配置，通常在Spring中管理数据源，而不是这里 -->
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url"
+                          value="jdbc:mysql://localhost:3306/测试中文库?serverTimezone=GMT%2B8&amp;userSSL=true&amp;useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="username" value="root"/>
+                <property name="password" value="Yuri"/>
+                <!-- 这种方法传过来的中文会乱码-->
+                <!-- <property name="driver" value="${db.driver}"/>-->
+                <!-- <property name="url" value="${db.url}"/>-->
+                <!-- <property name="username" value="${db.username}"/>-->
+                <!-- <property name="password" value="${db.password}"/>-->
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!-- 配置此项 在mapper文件中写sql语句时可以指定databaseId 根据不通的数据库执行不通的sql语句 -->
+    <databaseIdProvider type="DB_VENDOR">
+        <property name="MySQL" value="mysql"/>
+        <property name="Oracle" value="oracle"/>
+    </databaseIdProvider>
+
+    <!-- 引入SQL映射文件,Mapper文件 -->
+    <mappers>
+        <mapper resource="映射/用户映射.xml"/>
+        <mapper resource="映射/用户信息映射.xml"/>
+    </mappers>
+
+</configuration>
