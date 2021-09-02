@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface 用户信息映射 {
 
-    public 用户信息 查找(String 用户编号);
+    public 用户信息 查找(String 主键);
 
     public Integer 新增(用户信息 用户信息);
 
@@ -19,11 +19,11 @@ public interface 用户信息映射 {
     // 也可以将多个参数封装为map后直接传递map
     // 数组封装后的默认key是“array”
     // Collection集合对应的key是“collection”，如果是List集合也可以使用”list“作为key获取参数
-    public Integer 删除(@Param("用户编号") String 用户编号);
+    public Integer 删除(@Param("主键") String 主键);
 
-    public Integer 真删(@Param("用户编号") String 用户编号);
+    public Integer 真删(@Param("主键") String 主键);
 
-    @MapKey("用户编号")  //查询结果返回为map集合，设置对象的”用户编号“属性为map的key
+    @MapKey("主键")  //查询结果返回为map集合，设置对象的”主键“属性为map的key
     public Map<String, 用户信息> 获取所有用户();
 
 }

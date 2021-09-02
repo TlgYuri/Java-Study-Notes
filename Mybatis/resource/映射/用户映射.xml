@@ -6,56 +6,61 @@
 <mapper namespace="xyz.yurihentai.映射.用户映射">
 
     <resultMap id="用户加用户信息" type="用户">
-        <id column="用户编号" property="用户编号"/>
+        <id column="主键" property="主键"/>
         <result column="昵称" property="昵称"/>
         <result column="账号" property="账号"/>
         <result column="密码" property="密码"/>
         <result column="创建时间" property="创建时间"/>
-        <result column="更新时间" property="更新时间"/>
+        <result column="修改时间" property="修改时间"/>
         <!-- 使用查询结果进行查询，将查询结果作为指定属性的值 -->
-        <association column="用户编号" property="用户信息" select="xyz.yurihentai.映射.用户信息映射.查找" fetchType="eager"/>
+        <association column="主键" property="用户信息" select="xyz.yurihentai.映射.用户信息映射.查找" fetchType="eager"/>
     </resultMap>
 
     <resultMap id="用户级联用户信息" type="用户">
-        <id column="用户编号" property="用户编号"/>
+        <id column="主键" property="主键"/>
         <result column="昵称" property="昵称"/>
         <result column="账号" property="账号"/>
         <result column="密码" property="密码"/>
         <result column="创建时间" property="创建时间"/>
-        <result column="更新时间" property="更新时间"/>
+        <result column="修改时间" property="修改时间"/>
         <!-- 类：用户信息 -->
-        <result column="用户信息.用户编号" property="用户信息.用户编号"/>
+        <result column="i.主键" property="用户信息.主键"/>
+        <result column="i.姓名" property="用户信息.姓名"/>
+        <result column="i.性别" property="用户信息.性别"/>
+        <result column="i.年龄" property="用户信息.年龄"/>
+        <result column="i.生日" property="用户信息.生日"/>
+        <result column="i.身份证号" property="用户信息.身份证号"/>
     </resultMap>
 
     <select id="级联查找" resultMap="用户级联用户信息">
-        SELECT u.用户编号, u.昵称, u.账号, u.密码, u.创建时间, u.更新时间,
-                i.用户编号, i.姓名, i.性别, i.年龄, i.生日, i.身份证号
+        SELECT u.主键, u.昵称, u.账号, u.密码, u.创建时间, u.修改时间,
+                i.主键, i.姓名, i.性别, i.年龄, i.生日, i.身份证号
         FROM 用户表 AS u
         LEFT JOIN 用户信息表 AS i
-        ON u.用户编号 = i.用户编号
-        WHERE u.用户编号 = #{用户编号}
+        ON u.主键 = i.主键
+        WHERE u.主键 = #{主键}
               AND u.是否删除 = 0
               AND i.是否删除 = 0
     </select>
 
     <select id="查找" resultMap="用户加用户信息">
-        SELECT 用户编号, 昵称, 账号, 密码, 创建时间, 更新时间
+        SELECT 主键, 昵称, 账号, 密码, 创建时间, 修改时间
         FROM 用户表
-        WHERE 用户编号 = #{用户编号} AND 是否删除 = 0
+        WHERE 主键 = #{主键} AND 是否删除 = 0
     </select>
 
     <!--
-        useGeneratedKeys：是否启用自动生成主键(必须数据库支持，入mysql、sqlServer)
-        keyProperty：数据库中制定了自动生成主键的字段
+        useGeneratedKeys：是否启用自动生成主主键(必须数据库支持，入mysql、sqlServer)
+        keyProperty：数据库中制定了自动生成主主键的字段
     -->
-    <insert id="新增" parameterType="用户" useGeneratedKeys="true" keyProperty="用户编号" databaseId="mysql">
-            INSERT (用户编号, 昵称, 账号, 密码, 创建时间, 更新时间)
+    <insert id="新增" parameterType="用户" useGeneratedKeys="true" keyProperty="主键" databaseId="mysql">
+            INSERT (主键, 昵称, 账号, 密码, 创建时间, 修改时间)
             INTO 用户表
-            VALUES (#{用户编号}, #{昵称}, #{账号}, #{密码}, #{创建时间}, #{创建时间});
+            VALUES (#{主键}, #{昵称}, #{账号}, #{密码}, #{创建时间}, #{创建时间});
         </insert>
 
     <!--    <insert id="新增" parameterType="用户" databaseId="oracle">-->
-    <!-- oracle不支持自动生成主键，通过子元素查找然后将查找到的值赋给id -->
+    <!-- oracle不支持自动生成主主键，通过子元素查找然后将查找到的值赋给id -->
     <!--          <selectKey order="BEFORE" keyProperty="id" resultType="java.lang.String">-->
     <!--                select employee_seq.nextval from dual-->
     <!--            </selectKey>-->
@@ -79,35 +84,35 @@
 
     <!-- where -->
     <select id="where示例" resultType="用户">
-        SELECT 用户编号, 昵称, 账号, 密码, 创建时间, 更新时间
+        SELECT 主键, 昵称, 账号, 密码, 创建时间, 修改时间
         FROM 用户表
         <where><!-- 没有手动写WHERE时会自动加where  已经写了有WHERE时不会额外加WHERE -->
-            <if test="用户编号!=null">
-                用户编号 = #{用户编号} AND
+            <if test="主键!=null">
+                主键 = #{主键} AND
             </if>
             是否删除 = 0
         </where>
     </select>
     <!-- trim -->
     <select id="trim示例" resultType="用户">
-        SELECT 用户编号, 昵称, 账号, 密码, 创建时间, 更新时间
+        SELECT 主键, 昵称, 账号, 密码, 创建时间, 修改时间
         FROM 用户表
         <!-- 添加指定前缀 去除指定前缀 添加指定后缀 去除指定后缀 -->
         <trim prefix="WHERE" prefixOverrides="xx" suffix="" suffixOverrides="xx">
-            <if test="用户编号!=null">
-                xx 用户编号 = #{用户编号} AND
+            <if test="主键!=null">
+                xx 主键 = #{主键} AND
             </if>
             是否删除 = 0 xx
         </trim>
     </select>
     <!-- choose -->
     <select id="choose示例" resultType="用户">
-        SELECT 用户编号, 昵称, 账号, 密码, 创建时间, 更新时间
+        SELECT 主键, 昵称, 账号, 密码, 创建时间, 修改时间
         FROM 用户表
         <where><!-- 类似switch 只会从多个条件中选一个 -->
             <choose>
-                <when test="用户编号!=null">
-                    用户编号 = #{用户编号}
+                <when test="主键!=null">
+                    主键 = #{主键}
                 </when>
                 <when test="账号!=null">
                     账号 = #{账号}
@@ -125,21 +130,21 @@
             <if test="密码!=null">
                 密码 = #{密码}
             </if>
-            <if test="更新时间!=null">
-                更新时间 = #{更新时间}
+            <if test="修改时间!=null">
+                修改时间 = #{修改时间}
             </if>
         </set>
-        WHERE 用户编号 = #{用户编号}
+        WHERE 主键 = #{主键}
     </update>
     <!-- foreach -->
     <select id="foreach示例" resultType="用户">
-        SELECT 用户编号, 昵称, 账号, 密码, 创建时间, 更新时间
+        SELECT 主键, 昵称, 账号, 密码, 创建时间, 修改时间
         FROM 用户表
-        WHERE 是否删除 = 0 AND 用户编号 IN
+        WHERE 是否删除 = 0 AND 主键 IN
         <!-- index属性代表list集合的下标 或者map集合的key -->
         <!-- @param注解在junit测试时不起作用  使用默认值list或者collection 或者map集合的key -->
-        <foreach collection="list" item="用户编号" separator="," open="(" close=")">
-            #{用户编号}
+        <foreach collection="list" item="主键" separator="," open="(" close=")">
+            #{主键}
         </foreach>
     </select>
 

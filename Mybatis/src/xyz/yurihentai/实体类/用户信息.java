@@ -1,14 +1,13 @@
 package xyz.yurihentai.实体类;
 
-import xyz.yurihentai.枚举.性别枚举;
 import lombok.Data;
+import xyz.yurihentai.实体类.基类.实体基类;
+import xyz.yurihentai.枚举.性别枚举;
 
 import java.util.Date;
 
 @Data
-public class 用户信息 {
-
-    private String 用户编号;
+public class 用户信息 extends 实体基类 {
 
     private String 姓名;
 
@@ -20,9 +19,5 @@ public class 用户信息 {
     private Date 生日;
 
     private String 身份证号;
-
-    private Date 创建时间;
-
-    private Date 更新时间;
 
 }
