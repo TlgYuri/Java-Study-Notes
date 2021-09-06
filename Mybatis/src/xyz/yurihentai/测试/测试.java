@@ -64,7 +64,7 @@ public class 测试 {
             System.out.println(sql会话工厂);
             会话 = sql会话工厂.openSession();
 
-            用户 用户1 = 会话.selectOne("com.yuri.映射.用户映射.查找", "1145141919810");
+            用户 用户1 = 会话.selectOne("xyz.yurihentai.映射.用户映射.查找", "1145141919810");
             System.out.println(用户1);
         } catch (IOException 异常) {
             异常.printStackTrace();
@@ -86,7 +86,7 @@ public class 测试 {
             System.out.println(sql会话工厂);
             会话 = sql会话工厂.openSession();
 
-            用户 用户1 = 会话.selectOne("com.yuri.映射.用户映射.where示例", "1145141919810");
+            用户 用户1 = 会话.selectOne("xyz.yurihentai.映射.用户映射.where示例", "1145141919810");
             System.out.println(用户1);
         } catch (IOException 异常) {
             异常.printStackTrace();
@@ -108,7 +108,7 @@ public class 测试 {
             System.out.println(sql会话工厂);
             会话 = sql会话工厂.openSession();
 
-            用户 用户1 = 会话.selectOne("com.yuri.映射.用户映射.trim示例", "1145141919810");
+            用户 用户1 = 会话.selectOne("xyz.yurihentai.映射.用户映射.trim示例", "1145141919810");
             System.out.println(用户1);
         } catch (IOException 异常) {
             异常.printStackTrace();
@@ -132,12 +132,12 @@ public class 测试 {
 
             用户 用户1 = new 用户();
             用户1.set主键("1145141919810");
-            用户1 = 会话.selectOne("com.yuri.映射.用户映射.choose示例", 用户1);
+            用户1 = 会话.selectOne("xyz.yurihentai.映射.用户映射.choose示例", 用户1);
             System.out.println(用户1);
 
             用户1 = new 用户();
             用户1.set账号("114514");
-            用户1 = 会话.selectOne("com.yuri.映射.用户映射.choose示例", 用户1);
+            用户1 = 会话.selectOne("xyz.yurihentai.映射.用户映射.choose示例", 用户1);
             System.out.println(用户1);
         } catch (IOException 异常) {
             异常.printStackTrace();
@@ -162,7 +162,7 @@ public class 测试 {
             用户 用户1 = new 用户();
             用户1.set主键("1145141919810");
             用户1.set修改时间(new Date());
-            Integer result = 会话.update("com.yuri.映射.用户映射.set示例", 用户1);
+            Integer result = 会话.update("xyz.yurihentai.映射.用户映射.set示例", 用户1);
             System.out.println(result);
         } catch (IOException 异常) {
             异常.printStackTrace();
@@ -187,7 +187,7 @@ public class 测试 {
             List<String> list = new ArrayList<>();
             list.add("1145141919810");
             list.add("13579");
-            List<用户> 查询结果集 = 会话.selectList("com.yuri.映射.用户映射.foreach示例", list);
+            List<用户> 查询结果集 = 会话.selectList("xyz.yurihentai.映射.用户映射.foreach示例", list);
             System.out.println(查询结果集);
         } catch (IOException 异常) {
             异常.printStackTrace();
