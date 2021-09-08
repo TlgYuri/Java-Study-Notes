@@ -68,6 +68,11 @@
         <typeHandler javaType="性别枚举" jdbcType="TINYINT" handler="性别枚举处理器"/>
     </typeHandlers>
 
+    <!-- 引入分页插件 -->
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor" />
+    </plugins>
+
     <!-- 数据库连接环境的配置，通常在Spring中管理数据源，而不是这里 -->
     <environments default="development">
         <environment id="development">

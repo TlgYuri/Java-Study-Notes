@@ -1,12 +1,12 @@
 package xyz.yurihentai.测试;
 
-import xyz.yurihentai.实体类.用户;
-import xyz.yurihentai.实体类.用户信息;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Test;
+import xyz.yurihentai.实体类.用户;
+import xyz.yurihentai.实体类.用户信息;
 
 import java.io.IOException;
 import java.io.InputStream;
