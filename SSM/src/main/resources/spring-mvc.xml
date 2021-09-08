@@ -9,13 +9,13 @@
 
     <!-- 组件扫描 -->
     <context:component-scan base-package="xyz.yurihentai" use-default-filters="false">
-        <context:include-filter type="annotation"
-                                expression="org.springframework.stereotype.Controller"/>
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
+
     <!-- 视图解析器 -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/"></property>
-        <!-- <property name="suffix" value=".jsp"></property> -->
+        <!-- <property name="suffix" value=""></property> -->
     </bean>
 
     <mvc:default-servlet-handler/>

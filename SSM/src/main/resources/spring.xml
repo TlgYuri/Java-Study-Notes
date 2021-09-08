@@ -10,27 +10,31 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 
     <import resource="spring-mvc.xml"/>
+    <import resource="spring-redis.xml"/>
+
+    <!-- import导入其他配置文件，如果多次引入同一个 *.properties 文件会导致报错  通过设置ignore-unresolvable=true解决 -->
+    <context:property-placeholder ignore-unresolvable="true"  location="classpath:connection.properties"/>
 
     <!-- 组件扫描 -->
     <context:component-scan base-package="xyz.yurihentai">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
-    <!-- 连接池 -->
-    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <!-- c3p0连接池 -->
 <!--    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">-->
 <!--        <property name="driverClass" value="${jdbc.driver}"/>-->
 <!--        <property name="jdbcUrl" value="${jdbc.url}"/>-->
 <!--        <property name="user" value="${jdbc.username}"/>-->
 <!--        <property name="password" value="${jdbc.password}"/>-->
 <!--    </bean>-->
+    <!-- druid连接池 -->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
-        <property name="driverClassName" value="${jdbc.driver}"/>
-<!--        <property name="url" value="${jdbc.url}"/>-->
+        <property name="username" value="${mysql.jdbc.username}"/>
+        <property name="password" value="${mysql.jdbc.password}"/>
+        <property name="driverClassName" value="${mysql.jdbc.driver}"/>
         <!-- 通过properties文件引入中文会有问题 -->
+        <!-- <property name="url" value="${mysql.jdbc.url}"/> -->
         <property name="url" value="jdbc:mysql://localhost:3306/测试中文库?serverTimezone=GMT%2B8&amp;userSSL=true&amp;useUnicode=true&amp;characterEncoding=UTF-8"/>
-        <property name="username" value="${jdbc.username}"/>
-        <property name="password" value="${jdbc.password}"/>
     </bean>
 
     <!-- 事务 -->
@@ -59,7 +63,12 @@
                     <property name="properties">
                         <props>
                             <prop key="helperDialect">mysql</prop>
-                            <!-- <prop key="reasonable">true</prop> -->
+                            <!--
+                                分页合理化参数，默认false,直接根据参数进行查询
+                                当该参数设置为 true 时，pageNum（页数）<= 0 时会查询第一页
+                                                     pageNum>pages（超过总页数时），会查询最后一页
+                            -->
+                            <prop key="reasonable">true</prop>
                         </props>
                     </property>
                 </bean>
@@ -72,6 +81,7 @@
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="xyz.yurihentai.mapper"/>
     </bean>
+
      <mybatis-spring:scan base-package="xyz.yurihentai.mapper"/>
 
 </beans>

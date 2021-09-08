@@ -1,22 +1,22 @@
-package xyz.yurihentai.dao;
+package xyz.yurihentai.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import xyz.yurihentai.bean.用户;
 import xyz.yurihentai.bean.用户Example;
 import xyz.yurihentai.mapper.用户Mapper;
 
 import java.util.List;
 
-@Component
-public class 用户DAO {
+@Service
+public class 用户服务 {
 
     private final 用户Mapper 用户Mapper;
 
     @Autowired
-    public 用户DAO(用户Mapper 用户Mapper) {
+    public 用户服务(用户Mapper 用户Mapper) {
         this.用户Mapper = 用户Mapper;
     }
 

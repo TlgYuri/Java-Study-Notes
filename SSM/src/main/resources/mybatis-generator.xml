@@ -20,6 +20,7 @@
         </commentGenerator>
 
         <!--数据库链接URL，用户名、密码 -->
+        <!-- 有概率出现无法逆向生成  解决方法之一需要设置连接参数 useSSl=false  原因不明 -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
                         connectionURL="jdbc:mysql://localhost:3306/测试中文库?serverTimezone=Asia/Shanghai"
                         userId="root"
