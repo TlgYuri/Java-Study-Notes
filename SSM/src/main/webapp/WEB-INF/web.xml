@@ -48,10 +48,10 @@
     </filter-mapping>
 
     <!-- 实例化SpringIOC容器的监听器 -->
-<!--    <context-param>-->
-<!--        <param-name>contextConfigLocation</param-name>-->
-<!--        <param-value>classpath:spring.xml</param-value>-->
-<!--    </context-param>-->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:spring.xml</param-value>
+    </context-param>
 
     <!-- SpringSecurity安全控制 -->
     <filter>
