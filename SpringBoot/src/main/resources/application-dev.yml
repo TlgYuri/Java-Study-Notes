@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: SpringBoot
+  redis:
+    host: localhost
+    port: 6379
+  datasource:
+    url: jdbc:mysql://localhost:3306/测试中文库?serverTimezone=GMT%2B8&userSSL=true&useUnicode=true&characterEncoding=UTF-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: Yuri
+  servlet:
+    multipart:
+      enabled: true
+
+server:
+  port: 8080
+  servlet:
+    #项目根路径
+    context-path: /
+    application-display-name: SpringBoot
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: on
+  mapper-locations: classpath:/mapper/xml/*.xml
