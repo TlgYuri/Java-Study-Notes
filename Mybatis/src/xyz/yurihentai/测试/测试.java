@@ -31,8 +31,8 @@ public class 测试 {
             int update = 会话.update("用户信息映射.更新", 用户信息1);
             System.out.println("udpate:" + update);
 
-            用户信息1.set主键("13579");
-            int delete = 会话.delete("用户信息映射.真删", 用户信息1.get主键());
+            用户信息1.set编号("13579");
+            int delete = 会话.delete("用户信息映射.真删", 用户信息1.get编号());
             System.out.println("delete:" + delete);
             用户信息1.set身份证号("13579");
             int insert = 会话.insert("用户信息映射.新增", 用户信息1);
@@ -42,7 +42,7 @@ public class 测试 {
             用户信息1 = 会话.selectOne("用户信息映射.查找", "13579");
             System.out.println(用户信息1);
 
-            delete = 会话.delete("用户信息映射.删除", 用户信息1.get主键());
+            delete = 会话.delete("用户信息映射.删除", 用户信息1.get编号());
             System.out.println("delete:" + delete);
         } catch (IOException 异常) {
             异常.printStackTrace();
@@ -131,7 +131,7 @@ public class 测试 {
             会话 = sql会话工厂.openSession();
 
             用户 用户1 = new 用户();
-            用户1.set主键("1145141919810");
+            用户1.set编号("1145141919810");
             用户1 = 会话.selectOne("xyz.yurihentai.映射.用户映射.choose示例", 用户1);
             System.out.println(用户1);
 
@@ -160,7 +160,7 @@ public class 测试 {
             会话 = sql会话工厂.openSession();
 
             用户 用户1 = new 用户();
-            用户1.set主键("1145141919810");
+            用户1.set编号("1145141919810");
             用户1.set修改时间(new Date());
             Integer result = 会话.update("xyz.yurihentai.映射.用户映射.set示例", 用户1);
             System.out.println(result);

@@ -35,42 +35,42 @@
                 <select>默认为false
     -->
     <select id="查找" resultType="用户信息" useCache="false" flushCache="false">
-        SELECT 主键, 姓名, 性别, 年龄, 生日, 身份证号, 创建时间, 修改时间
+        SELECT 编号, 姓名, 性别, 年龄, 生日, 身份证号, 创建时间, 修改时间
         FROM 用户信息表
-        WHERE 主键 = #{主键} and 是否删除 = 0
+        WHERE 编号 = #{编号} and 是否删除 = 0
     </select>
 
-    <insert id="新增" parameterType="用户信息" useGeneratedKeys="true" keyProperty="主键" databaseId="mysql">
-        INSERT INTO 用户信息表(主键, 姓名, 性别, 年龄, 生日, 身份证号, 创建时间)
-        VALUES(#{主键}, #{姓名}, #{性别}, #{年龄}, #{生日}, #{身份证号}, #{创建时间})
+    <insert id="新增" parameterType="用户信息" useGeneratedKeys="true" keyProperty="编号" databaseId="mysql">
+        INSERT INTO 用户信息表(编号, 姓名, 性别, 年龄, 生日, 身份证号, 创建时间)
+        VALUES(#{编号}, #{姓名}, #{性别}, #{年龄}, #{生日}, #{身份证号}, #{创建时间})
     </insert>
     <insert id="新增" parameterType="用户信息" databaseId="oracle">
-        INSERT INTO 用户信息表(主键, 姓名, 性别, 年龄, 生日, 身份证号, 创建时间)
-        VALUES(#{主键}, #{姓名}, #{性别}, #{年龄}, to_date(#{生日},'yyyy-mm-dd hh24:mi:ss'), #{身份证号}, to_date(#{创建时间},'yyyy-mm-dd hh24:mi:ss'))
+        INSERT INTO 用户信息表(编号, 姓名, 性别, 年龄, 生日, 身份证号, 创建时间)
+        VALUES(#{编号}, #{姓名}, #{性别}, #{年龄}, to_date(#{生日},'yyyy-mm-dd hh24:mi:ss'), #{身份证号}, to_date(#{创建时间},'yyyy-mm-dd hh24:mi:ss'))
     </insert>
 
     <update id="更新" parameterType="用户信息" databaseId="mysql">
         UPDATE 用户信息表
         SET 姓名 = #{姓名}, 性别 = #{性别}, 年龄 = #{年龄},
             生日 = #{生日}, 身份证号 = #{身份证号}, 修改时间 = #{修改时间}
-        WHERE 主键 = #{主键}
+        WHERE 编号 = #{编号}
     </update>
     <update id="更新" parameterType="用户信息" databaseId="oracle">
         UPDATE 用户信息表
         SET 姓名 = #{姓名}, 性别 = #{性别}, 年龄 = #{年龄}, 身份证号 = #{身份证号},
             生日 = to_date(#{生日},'yyyy-mm-dd hh24:mi:ss'), 修改时间 = to_date(#{修改时间},'yyyy-mm-dd hh24:mi:ss')
-        WHERE 主键 = #{主键}
+        WHERE 编号 = #{编号}
     </update>
 
     <update id="删除" parameterType="String">
         UPDATE 用户信息表
         SET 是否删除 = 1
-        WHERE 主键 = #{主键}
+        WHERE 编号 = #{编号}
     </update>
 
     <delete id="真删" parameterType="String">
         DELETE FROM 用户信息表
-        WHERE 主键 = #{主键}
+        WHERE 编号 = #{编号}
     </delete>
 
 </mapper>

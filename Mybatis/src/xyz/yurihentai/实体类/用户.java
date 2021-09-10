@@ -6,7 +6,7 @@ import xyz.yurihentai.实体类.基类.实体基类;
 @Data
 public class 用户 extends 实体基类 {
 
-    private String 昵称;
+    private String 用户名;
 
     private String 账号;
 

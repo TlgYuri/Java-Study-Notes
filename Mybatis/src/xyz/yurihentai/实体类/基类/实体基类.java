@@ -8,7 +8,7 @@ import java.util.Date;
 @Data
 public class 实体基类 implements Serializable {
 
-    private String 主键;
+    private String 编号;
 
     private Date 创建时间;
 
