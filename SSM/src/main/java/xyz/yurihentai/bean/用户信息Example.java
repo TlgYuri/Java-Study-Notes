@@ -195,63 +195,63 @@ public class 用户信息Example {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
-        public Criteria and主键IsNull() {
-            addCriterion("主键 is null");
+        public Criteria and编号IsNull() {
+            addCriterion("编号 is null");
             return (Criteria) this;
         }
 
-        public Criteria and主键IsNotNull() {
-            addCriterion("主键 is not null");
+        public Criteria and编号IsNotNull() {
+            addCriterion("编号 is not null");
             return (Criteria) this;
         }
 
-        public Criteria and主键EqualTo(Long value) {
-            addCriterion("主键 =", value, "主键");
+        public Criteria and编号EqualTo(Long value) {
+            addCriterion("编号 =", value, "编号");
             return (Criteria) this;
         }
 
-        public Criteria and主键NotEqualTo(Long value) {
-            addCriterion("主键 <>", value, "主键");
+        public Criteria and编号NotEqualTo(Long value) {
+            addCriterion("编号 <>", value, "编号");
             return (Criteria) this;
         }
 
-        public Criteria and主键GreaterThan(Long value) {
-            addCriterion("主键 >", value, "主键");
+        public Criteria and编号GreaterThan(Long value) {
+            addCriterion("编号 >", value, "编号");
             return (Criteria) this;
         }
 
-        public Criteria and主键GreaterThanOrEqualTo(Long value) {
-            addCriterion("主键 >=", value, "主键");
+        public Criteria and编号GreaterThanOrEqualTo(Long value) {
+            addCriterion("编号 >=", value, "编号");
             return (Criteria) this;
         }
 
-        public Criteria and主键LessThan(Long value) {
-            addCriterion("主键 <", value, "主键");
+        public Criteria and编号LessThan(Long value) {
+            addCriterion("编号 <", value, "编号");
             return (Criteria) this;
         }
 
-        public Criteria and主键LessThanOrEqualTo(Long value) {
-            addCriterion("主键 <=", value, "主键");
+        public Criteria and编号LessThanOrEqualTo(Long value) {
+            addCriterion("编号 <=", value, "编号");
             return (Criteria) this;
         }
 
-        public Criteria and主键In(List<Long> values) {
-            addCriterion("主键 in", values, "主键");
+        public Criteria and编号In(List<Long> values) {
+            addCriterion("编号 in", values, "编号");
             return (Criteria) this;
         }
 
-        public Criteria and主键NotIn(List<Long> values) {
-            addCriterion("主键 not in", values, "主键");
+        public Criteria and编号NotIn(List<Long> values) {
+            addCriterion("编号 not in", values, "编号");
             return (Criteria) this;
         }
 
-        public Criteria and主键Between(Long value1, Long value2) {
-            addCriterion("主键 between", value1, value2, "主键");
+        public Criteria and编号Between(Long value1, Long value2) {
+            addCriterion("编号 between", value1, value2, "编号");
             return (Criteria) this;
         }
 
-        public Criteria and主键NotBetween(Long value1, Long value2) {
-            addCriterion("主键 not between", value1, value2, "主键");
+        public Criteria and编号NotBetween(Long value1, Long value2) {
+            addCriterion("编号 not between", value1, value2, "编号");
             return (Criteria) this;
         }
 

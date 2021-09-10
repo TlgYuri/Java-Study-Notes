@@ -4,12 +4,13 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
        xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <import resource="spring-mvc.xml"/>
+<!--    <import resource="spring-mvc.xml"/>-->
     <import resource="spring-redis.xml"/>
 
     <!-- import导入其他配置文件，如果多次引入同一个 *.properties 文件会导致报错  通过设置ignore-unresolvable=true解决 -->
@@ -17,7 +18,7 @@
 
     <!-- 组件扫描 -->
     <context:component-scan base-package="xyz.yurihentai">
-        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <!-- <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/> -->
     </context:component-scan>
 
     <!-- c3p0连接池 -->
@@ -83,5 +84,19 @@
     </bean>
 
      <mybatis-spring:scan base-package="xyz.yurihentai.mapper"/>
+
+    <!-- 开启全局基于注解的方法级别访问控制（org.springframework.security.access.intercept.aopalliance.MethodSecurityInterceptor -->
+    <!-- 通过配置类注解开启 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled=true, proxyTargetClass = true)-->
+    <!--    <security:global-method-security pre-post-annotations="enabled" secured-annotations="enabled" proxy-target-class="true" />-->
+
+    <!-- ↓↓↓↓↓↓↓ MVC配置 ↓↓↓↓↓↓↓ -->
+    <!-- 视图解析器 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/"></property>
+        <!-- <property name="suffix" value=""></property> -->
+    </bean>
+
+    <mvc:default-servlet-handler/>
+    <mvc:annotation-driven/>
 
 </beans>

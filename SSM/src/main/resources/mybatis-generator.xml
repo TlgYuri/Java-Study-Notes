@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
-<!--    <properties resource="application.properties"></properties>-->
+    <!--    <properties resource="application.properties"></properties>-->
     <!-- 指定数据库驱动 -->
     <!--    <classPathEntry location="E:\developmentKit\maven\maven_repository\mysql\mysql-connector-java\5.1.39\mysql-connector-java-5.1.39.jar"/>-->
 
@@ -14,9 +14,9 @@
         <commentGenerator>
             <!-- 这个元素用来去除指定生成的注释中是否包含生成的日期 false:表示保护 -->
             <!-- 如果生成日期，会造成即使修改一个字段，整个实体类所有属性都会发生变化，不利于版本控制，所以设置为true -->
-            <property name="suppressDate" value="true" />
+            <property name="suppressDate" value="true"/>
             <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
-            <property name="suppressAllComments" value="false" />
+            <property name="suppressAllComments" value="false"/>
         </commentGenerator>
 
         <!--数据库链接URL，用户名、密码 -->
@@ -30,44 +30,47 @@
         <javaTypeResolver>
             <!-- This property is used to specify whether MyBatis Generator should
                 force the use of java.math.BigDecimal for DECIMAL and NUMERIC fields, -->
-            <property name="forceBigDecimals" value="false" />
+            <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
 
         <!-- targetpakage是即将生成的目录，targetProject是对应的前缀目录。可根据自己需求生到对应目录。下次运行会直接默认覆盖原来位置的文件 -->
         <!-- 生成模型的包名和位置   映射实体类的位置 -->
         <javaModelGenerator targetPackage="xyz.yurihentai.bean"
                             targetProject="src/main/java">
-            <property name="enableSubPackages" value="true" />
-            <property name="trimStrings" value="true" />
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
         <!-- 生成映射文件的包名和位置  mapper.xml -->
         <sqlMapGenerator targetPackage="mapper.xml"
                          targetProject="src/main/resources">
-            <property name="enableSubPackages" value="true" />
+            <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
         <!-- 生成DAO的包名和位置   mapper接口-->
         <javaClientGenerator type="XMLMAPPER" targetPackage="xyz.yurihentai.mapper"
                              targetProject="src/main/java">
-            <property name="enableSubPackages" value="true" />
+            <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <!--要生成哪些表  orders是我的表名，Orders是生成的类名，比如我的映射类为Order，映射接口OrderMapper, 映射文件为OrderMapper.xml，可以添加多个表，里面的几个配置大概意思就是是否允许生成example文件和支持selectByExample。用过Mybatis的应该知道selectByExample，对于一些简单查询用这个还是比较方便的。哈哈、话有点多，记得删除-->
-        <!-- <table tableName="gm_agent_user" domainObjectName="User"
-                enableCountByExample="true" enableUpdateByExample="true"
-                enableDeleteByExample="true" enableSelectByExample="true"
-                selectByExampleQueryId="true"></table>-->
-        <!-- 要生成哪些表  -->
-        <!-- <table tableName="gm_app" domainObjectName="App"
-                enableCountByExample="true" enableUpdateByExample="true"
-                enableDeleteByExample="true" enableSelectByExample="true"
-                selectByExampleQueryId="true"></table>-->
-
-        <table tableName="%" schema="SCOTT" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true" >
-<!--             <columnRenamingRule searchString="^gm_" replaceString=""/>-->
-            <domainObjectRenamingRule searchString="表$" replaceString=""/>
+        <!--
+            生成指定表的文件，多个表配置多个标签即可
+            实体类的名称可以默认生成  也可以通过domainObjectName属性指定
+            里面的几个配置大概意思就是是否允许生成example文件和支持selectByExample
+        -->
+        <table tableName="角色表" enableCountByExample="true" enableUpdateByExample="true"
+               enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+            <!-- 设置默认生成实体类名称时的替换规则 -->
+            <domainObjectRenamingRule searchString="表$" replaceString="" />
         </table>
+        <table tableName="权限表" domainObjectName="权限" enableCountByExample="true" enableUpdateByExample="true"
+               enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true" />
+
+        <!-- 生成所有表的相关文件 -->
+        <!--        <table tableName="%" schema="SCOTT" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true" >-->
+        <!--&lt;!&ndash;             <columnRenamingRule searchString="^gm_" replaceString=""/>&ndash;&gt;-->
+        <!--            <domainObjectRenamingRule searchString="表$" replaceString=""/>-->
+        <!--        </table>-->
 
     </context>
 </generatorConfiguration>
