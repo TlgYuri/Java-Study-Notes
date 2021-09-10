@@ -23,4 +23,5 @@ public class MathImpl implements IMath {
 	public int divide(int x, int y) {
 		return x / y;
 	}
+
 }

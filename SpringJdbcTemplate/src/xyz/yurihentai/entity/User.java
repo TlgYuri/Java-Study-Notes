@@ -1,12 +1,12 @@
 package xyz.yurihentai.entity;
 
 public class User {
+
 	private int uid;
 	private String name;
 	private String balance;
 
-	public User() {
-	}
+	public User() {}
 
 	public User(int uid, String name, String balance) {
 		this.uid = uid;
@@ -46,4 +46,5 @@ public class User {
 				", balance='" + balance + '\'' +
 				'}';
 	}
+
 }

@@ -11,9 +11,9 @@ import xyz.yurihentai.service.IBookService;
 
 @Service
 public class BookServiceImpl implements IBookService {
+
 	@Autowired
 	private IBookDao dao;
-
 
 	/*
 		propagation	事务的传播
@@ -46,4 +46,5 @@ public class BookServiceImpl implements IBookService {
 	public User getUser(int uid) {
 		return dao.getUser(uid);
 	}
+
 }

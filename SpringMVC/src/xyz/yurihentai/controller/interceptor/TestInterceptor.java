@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 //两种实现方式  实现HandlerInterceptor接口  或者  继承HandlerInterceptorAdapter抽象类
 public class TestInterceptor implements HandlerInterceptor {
 
-
     @Override  //处理请求前执行
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
         System.out.println(this.getClass().getName() + " - preHandle");

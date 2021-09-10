@@ -53,4 +53,5 @@ public class BookDao implements IBookDao {
 		User user = jt.queryForObject("select * from userbalance where uid = ?",new BeanPropertyRowMapper<>(User.class), new Object[] {uid});
 		return user;
 	}
+
 }

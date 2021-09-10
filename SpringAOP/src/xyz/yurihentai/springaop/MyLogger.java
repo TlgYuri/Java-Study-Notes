@@ -12,6 +12,7 @@ import java.util.Arrays;
 @Aspect
 @Order(1)
 public class MyLogger {
+
     //执行顺序：around、before、after、afterReturning 或 afterThrowing
     //around 环绕通知，类似于动态代理，包含所有通知
 

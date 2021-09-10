@@ -5,6 +5,7 @@ import xyz.yurihentai.proxy.ientity.IMath;
 import xyz.yurihentai.proxy.ProxyUtil;
 
 public class Test {
+
 	public static void main(String[] args) {
 		ProxyUtil pu = new ProxyUtil(new MathImpl());
 		IMath math = (IMath)pu.getProxy();
@@ -12,4 +13,5 @@ public class Test {
 		System.out.println("<<<<<<<<<<>>>>>>>>>>");
 		System.out.println("result：" + math.divide(1,0));
 	}
+
 }

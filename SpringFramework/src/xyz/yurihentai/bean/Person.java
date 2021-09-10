@@ -54,4 +54,5 @@ public class Person {
 	public void destroy() {
 		System.out.println("IV:" + this.name + "销毁了");
 	}
+
 }
