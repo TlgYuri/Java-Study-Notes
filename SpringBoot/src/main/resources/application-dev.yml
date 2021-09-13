@@ -9,6 +9,11 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: Yuri
+    #指定数据库连接池类型
+    type: com.alibaba.druid.pool.DruidDataSource
+    #禁用自动生成数据源名称   指定数据源名称
+    #generate-unique-name: false
+    #name: datasource
   servlet:
     multipart:
       enabled: true
@@ -23,4 +28,31 @@ server:
 mybatis:
   configuration:
     map-underscore-to-camel-case: on
+    jdbc-type-for-null: null
+    database-id: mysql
+    call-setters-on-nulls: false
+    use-generated-keys: true
+    #开启二级缓存
+    #cache-enabled: true
   mapper-locations: classpath:/mapper/xml/*.xml
+  #指定配置文件位置 我这里直接配置在这里，就不单独引入配置文件了
+  #configuration-properties:
+
+#普通值
+#双引号包裹时，不会自动转移字符串内的特殊字符，如 \n变成换行  等
+#单引号引入会对特殊字符进行转义，如 输入\n 得到\n 等
+simple: value
+
+#引入map 或 对象
+objectName1:
+  propertyName1: value1
+  propertyName2: value2
+#或
+objectName2: {propertyName1: value1, propertyName2: value2}
+
+#引入数组
+array1:
+  - value1
+  - value2
+#或
+array2: [value1,value2]
