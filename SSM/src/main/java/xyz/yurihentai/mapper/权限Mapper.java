@@ -95,6 +95,13 @@ public interface 权限Mapper {
      */
     int updateByPrimaryKey(权限 record);
 
+    //可以直接通过注解设置Sql语句，不必编写mapper.xml文件 @Select @Insert @Update @Delete
+//    @Select("SELECT 编号, 名称, 编码, 创建时间, 修改时间" +
+//            "FROM 权限表" +
+//            "LEFT JOIN 角色_权限表" +
+//            "ON 权限表.编号 = 角色_权限表.权限编号" +
+//            "WHERE 角色_权限表.角色编号 = #{角色编号}" +
+//            "AND 权限表.是否删除 = 0")
     List<权限> 通过角色编号查找权限(Long 角色编号);
 
 }
