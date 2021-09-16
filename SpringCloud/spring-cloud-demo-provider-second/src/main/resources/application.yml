@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: spring-cloud-provider-second
+
+server:
+  port: 6902
+
+eureka:
+  client:
+    #指定将自己注册到哪个注册中心
+    service-url:
+      defaultZone: http://localhost:6969/eureka/
+  instance:
+    #是否用ip方式注册本服务
+    prefer-ip-address: true

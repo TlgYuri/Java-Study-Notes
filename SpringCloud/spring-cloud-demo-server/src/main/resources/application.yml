@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: spring-cloud-demo-server
+
+server:
+  port: 6971
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    appname: spring-cloud-demo-server
+  client:
+    service-url:
+      defaultZone: http://localhost:6969/eureka/
+
+#开启Feign对Hystrix支持
+feign:
+  circuitbreaker:
+    enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        # autoconfig，configprops，beans,dump,env,env/{name},mappings,metrics,metrics/{name},shutdown,trace
+        include: health,info,hystrix.stream # 访问/actuator/hystrix.stream能看到不断更新的监控流
+
+info:
+  app-name: spring-cloud-demo-server
+  company.addr: www.yurihentai.xyz

@@ -1,0 +1,17 @@
+spring:
+    application:
+      name: spring-cloud-registry
+
+server:
+  port: 6969
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    #是否注册到注册中心  本服务作为注册中心，因此false
+    register-with-eureka: false
+    #是否获取注册中心注册的其他服务的服务地址
+    fetch-registry: false
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
