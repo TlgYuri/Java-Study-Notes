@@ -33,7 +33,7 @@ public class TestController {
 
     @RequestMapping(value = "rest", method = RequestMethod.PUT)  //表单提交方式为POST 同时有一个参数”_method“值为对应的请求方式  且需要web.xml配置 org.springframework.web.filter.HiddenHttpMethodFilter
     public String rest(
-            @RequestParam(value = "name", required = false, defaultValue = "114514")  //value值需要与请求中传递过来的变量名一致
+            @RequestParam(value = "name", required = false, defaultValue = "114514")  //value=“name" 需要请求中传递过来的参数名为name
                     String param,
             @RequestHeader("Accept-Encoding") String encode,  //获取指定的请求头信息
             @CookieValue("JSESSIONID") String sessionId,    //获取cookie中的值
@@ -41,13 +41,13 @@ public class TestController {
         System.out.println(param); //对中文编码的处理需要tomcat配置-Dfile.encoding=utf-8 同时需要在web.xml配置编码解析器 org.springframework.web.filter.CharacterEncodingFilter
         System.out.println(encode);
         System.out.println(sessionId);
-        return "redirect:/rest.jsp";  //mvx.xml 中配置  tomcat默认解析器 <mvc:default-servlet-handler/>  和 注解驱动<mvc:annotation-driven/>
+        return "redirect:/rest";  //mvx.xml 中配置  tomcat默认解析器 <mvc:default-servlet-handler/>  和 注解驱动<mvc:annotation-driven/>
     }
 
     //对JSON的处理  原理：Spring3.0新增的HttpMessageConverter
     @ResponseBody   //返回为JSON数据，而不是视图  或者返回ResponseEntity<T>
     @RequestMapping("json")
-    public String testJson(@RequestBody Map<String, Object> param) {    //获取传递过来的JSON数据    或者使用HttpEntity<T>
+    public String testJson(@RequestBody Map<String, Object> param) {    // 通过请求体传递请求参数  获取传递过来的JSON数据   或者使用HttpEntity<T>
         return "OK";
     }
 
@@ -59,7 +59,7 @@ public class TestController {
 
     //需要配置Bean(依赖jar包 commons-io 和 commons-fileupload) ： org.springframework.web.multipart.commons.CommonsMultipartResolver
     @RequestMapping("uploadFile")
-    public String testMultipartFileUpload(MultipartFile file, String desc) {
+    public String testMultipartFileUpload(@RequestPart MultipartFile file, String desc) {  // 通过form-data传递请求参数
         System.out.println(desc);
         System.out.println(file.getOriginalFilename());
         try {
