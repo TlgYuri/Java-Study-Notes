@@ -51,6 +51,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 写在最后 剩余任何资源 必须认证
                 .anyRequest().authenticated();
 
+        //TODO 排除框架自带方式之外  尝试一下能不能通过自定义中文数据库实现登录状态持久化
+
         // 框架自带 登录状态数据库持久化 实现方式
 //        JdbcTokenRepositoryImpl jtp = new JdbcTokenRepositoryImpl();
 //        jtp.setDataSource(dataSource);
