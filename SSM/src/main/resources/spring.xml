@@ -15,6 +15,7 @@
 
     <!-- import导入其他配置文件，如果多次引入同一个 *.properties 文件会导致报错  通过设置ignore-unresolvable=true解决 -->
     <context:property-placeholder ignore-unresolvable="true"  location="classpath:connection.properties"/>
+    <context:property-placeholder ignore-unresolvable="true"  location="classpath:application.properties"/>
 
     <!-- 组件扫描 -->
     <context:component-scan base-package="xyz.yurihentai">
