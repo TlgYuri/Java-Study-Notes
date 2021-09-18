@@ -17,6 +17,12 @@ spring:
   servlet:
     multipart:
       enabled: true
+  #引入SpringSession
+  session:
+    #存储方式
+    store-type: redis
+    #session过期时间 (秒
+    timeout: 1800
 
 server:
   port: 8080
