@@ -7,8 +7,8 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/测试中文库?serverTimezone=GMT%2B8&userSSL=true&useUnicode=true&characterEncoding=UTF-8
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: Yuri
+    username: ENC(AK32rjj4u6b8Rz0owuU9aQGqkUVWCvMRvV9UgkVjhGUDvIxMUi+MIJxsG9w53O2Z)
+    password: ENC(q5BF5iIxnpzuPCQUbJYWiHuvOUm0324VulswOoUDTvL31yYDHZfiezC16HnCLsMq)
     #指定数据库连接池类型
     type: com.alibaba.druid.pool.DruidDataSource
     #禁用自动生成数据源名称   指定数据源名称
@@ -62,3 +62,10 @@ array1:
   - value2
 #或
 array2: [value1,value2]
+
+jasypt:
+  encryptor:
+    property:
+      prefix: ENC( #自定义加密前缀，默认ENC(
+    #加密的密钥
+    password: 114514
