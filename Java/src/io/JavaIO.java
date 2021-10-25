@@ -3,6 +3,8 @@ package io;
 import org.junit.Test;
 
 import java.io.*;
+import java.util.Arrays;
+import java.util.Scanner;
 
 /**
  * Java基础 IO相关
@@ -12,6 +14,7 @@ import java.io.*;
  */
 public class JavaIO {
 
+    /** java.io.File 文件类 */
     @Test
     public void testFile() {
         try {
@@ -45,7 +48,7 @@ public class JavaIO {
             reader = new FileReader("E:\\testInput.txt");
             writer = new FileWriter(new File("E:\\testOutput.txt"));
 
-            // 读取一个字节 1-255 读取不到返回-1
+            // 读取一个字节 1-65535 读取不到返回-1
             int read = reader.read();
             System.out.println(read);
             if (read != -1) {
@@ -145,6 +148,52 @@ public class JavaIO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    /** 数组流 处理字符或字节数组 */
+    public void testArrayStream() {
+        // 字符流与次类似，改为CharArrayReader和CharAraryWriter，操作char数组即可
+        byte[] buf = "testIn".getBytes();
+        ByteArrayInputStream input = new ByteArrayInputStream(buf);
+        int data;
+        while((data = input.read()) != -1){
+            System.out.println((char)data + ":" + data);
+        }
+
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        try {
+            output.write("testOut".getBytes("UTF-8"));
+            byte[] bytes = output.toByteArray();
+            System.out.println(Arrays.toString(bytes));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    /** 系统流 */
+    public void testSystemStream() throws Exception {
+        //控制台System.in 控制台输出System.out System.error
+        Scanner scanner = new Scanner(System.in);
+        while(true) {
+            System.out.print("======= 请输入数据(输入exit退出)： ");
+            String str = scanner.nextLine();//获取下一个整行输入
+            if ("exit".equals(str)) {
+                System.out.println("\n======= 已退出 =======");
+                break;
+            }
+            System.out.println(str);
+        }
+        scanner.close();
+
+        //替换系统流 将内容输出到指定文件中
+        System.out.println("\n======= 开始通过系统流向文件输出数据 =======");
+        OutputStream output = new FileOutputStream(new File("E:\\testOutput.txt"), true);
+        PrintStream printOut = new PrintStream(output);
+        System.setOut(printOut);
+        System.out.println("test System Stream");
+        System.out.flush();
     }
 
 }
