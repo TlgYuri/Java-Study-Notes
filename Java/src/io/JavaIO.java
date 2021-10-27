@@ -14,8 +14,8 @@ import java.util.Scanner;
  */
 public class JavaIO {
 
-    /** java.io.File 文件类 */
     @Test
+    /** java.io.File 文件类 */
     public void testFile() {
         try {
             File input = new File("E:\\testInput.txt");
@@ -34,6 +34,10 @@ public class JavaIO {
             }
             System.out.println(input.isDirectory());
             System.out.println(input.isFile());
+            System.out.println("文件字节数：" + input.length());
+//            input.delete(); //删除文件
+//            input.renameTo(new File("C:\\data\\new-file.txt"));  //重命名、移动文件
+//            System.out.println(input.list()); // 读取目录下的文件列表
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -153,12 +157,12 @@ public class JavaIO {
     @Test
     /** 数组流 处理字符或字节数组 */
     public void testArrayStream() {
-        // 字符流与次类似，改为CharArrayReader和CharAraryWriter，操作char数组即可
+        // 字符流与此类似，改为CharArrayReader和CharAraryWriter，操作char数组即可
         byte[] buf = "testIn".getBytes();
         ByteArrayInputStream input = new ByteArrayInputStream(buf);
         int data;
-        while((data = input.read()) != -1){
-            System.out.println((char)data + ":" + data);
+        while ((data = input.read()) != -1) {
+            System.out.println((char) data + ":" + data);
         }
 
         ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -176,7 +180,7 @@ public class JavaIO {
     public void testSystemStream() throws Exception {
         //控制台System.in 控制台输出System.out System.error
         Scanner scanner = new Scanner(System.in);
-        while(true) {
+        while (true) {
             System.out.print("======= 请输入数据(输入exit退出)： ");
             String str = scanner.nextLine();//获取下一个整行输入
             if ("exit".equals(str)) {
@@ -194,6 +198,55 @@ public class JavaIO {
         System.setOut(printOut);
         System.out.println("test System Stream");
         System.out.flush();
+    }
+
+    @Test
+    /** RandomAccessFile 随机读写文件 */
+    public void testRandomAccessFile() throws Exception {
+        RandomAccessFile file = new RandomAccessFile("E:\\testInput.txt", "rw");  // r:读 w:写
+        System.out.println("当前文件指针位置：" + file.getFilePointer());  //获取当前文件的指针位置，从0开始
+        file.seek(1); // 移动文件指针
+        System.out.println("移动指针后，文件指针位置：" + file.getFilePointer());
+        int data = file.read(); //方法执行完成后自动后移指针
+        if (data < 97) {
+            file.write(data - 32); //方法执行完成后自动后移指针
+        } else {
+            file.write(data + 32);
+        }
+        System.out.println(data);
+        System.out.println("读取到数据：" + (char) data + "，当前文件指针位置：" + file.getFilePointer());
+        file.close();
+    }
+
+    @Test
+    /** BufferdStream 缓冲 */
+    public void testBufferdStream() throws Exception {
+        /*
+            为输入流提供缓冲区，能提高很多IO的速度。
+            可以一次读取一大块的数据，而不需要每次从网络或者磁盘中一次读取一个字节。
+            特别是在访问大量磁盘数据时，缓冲通常会让IO快上许多。
+        */
+        // 创建缓冲流，指定流内缓冲区的大小（默认位8 * 1024
+        InputStream input = new BufferedInputStream(new FileInputStream("c:\\data\\input-file.txt"), 8 * 1024);
+    }
+
+    @Test
+    /** DataStream 读取、输出Java基本类型 */
+    public void teatDataInputStream() throws Exception {
+        //输入
+        DataInputStream input = new DataInputStream(new FileInputStream("binary.data"));
+        int aByte = input.read();
+        int anInt = input.readInt();
+        float aFloat = input.readFloat();
+        double aDouble = input.readDouble();
+        input.close();
+
+        //输出
+        DataOutputStream output = new DataOutputStream(new FileOutputStream("binary.data"));
+        output.write(45);
+        //byte data output.writeInt(4545);
+        //int data output.writeDouble(109.123);
+        //double data  output.close();
     }
 
 }
