@@ -1,14 +1,16 @@
 package io;
 
+import io.bean.SerializableBean;
 import org.junit.Test;
 
 import java.io.*;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Scanner;
 
 /**
- * Java基础 IO相关
- *
+ * Java基础 IO相关学习记录
+ * 学习文章来源：http://ifeve.com/java-io/
  * @author Yuri
  * @date 2021/10/13 11:45:14
  */
@@ -172,6 +174,12 @@ public class JavaIO {
             System.out.println(Arrays.toString(bytes));
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                output.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -198,6 +206,7 @@ public class JavaIO {
         System.setOut(printOut);
         System.out.println("test System Stream");
         System.out.flush();
+        printOut.close();
     }
 
     @Test
@@ -228,6 +237,7 @@ public class JavaIO {
         */
         // 创建缓冲流，指定流内缓冲区的大小（默认位8 * 1024
         InputStream input = new BufferedInputStream(new FileInputStream("c:\\data\\input-file.txt"), 8 * 1024);
+        input.close();
     }
 
     @Test
@@ -247,6 +257,79 @@ public class JavaIO {
         //byte data output.writeInt(4545);
         //int data output.writeDouble(109.123);
         //double data  output.close();
+        output.close();
+    }
+
+    @Test
+    /** 序列化 ObjectStream */
+    public void testObjectStream() throws Exception {
+        SerializableBean obj = new SerializableBean();
+        obj.setName("Yuri");
+        obj.setAge("24");
+        obj.setGender("男");
+        // 序列化
+        FileOutputStream output = new FileOutputStream("E:\\Object.data");
+        ObjectOutputStream objOutput = new ObjectOutputStream(output);
+        objOutput.writeObject(obj);
+
+        FileInputStream input = new FileInputStream("E:\\Object.data");
+        ObjectInputStream objInput = new ObjectInputStream(input);
+        Object o = objInput.readObject();
+        System.out.println(o);
+    }
+
+    @Test
+    /** PushbackInputStream 可以 将读到的数据重新推回inputStream中*/
+    public void testPushbackInputStream() throws Exception {
+        //PushBackReader与此类似
+        //指定缓冲区  决定了可写回的字节大小
+        PushbackInputStream input = new PushbackInputStream(new FileInputStream("E:\\testInput.txt"), 8);
+        int data = input.read();
+        System.out.println((char) data);
+        input.unread(data);  //将数据写回输入流
+        System.out.println((char) input.read());
+    }
+
+    @Test
+    /** SequenceInputStream 将多个流联通，逐个读取 */
+    public void testSequenceInputStream() throws Exception {
+        InputStream input1 = new FileInputStream("E:\\testInput.txt");
+        InputStream input2 = new FileInputStream("E:\\testOutput.txt");
+        InputStream combined = new SequenceInputStream(input1, input2); // 当input1内容读完后，从input2中读取数据
+        int read = combined.read();
+        System.out.println((char) read);
+        combined.close();
+    }
+
+    @Test
+    /** PrintStream 将数据原样文本化输出，而不是输出为字节数据 */
+    public void testPrintStream() throws Exception {
+        //PringWriter与此类似
+        FileOutputStream output = new FileOutputStream("E:\\testOutput.txt");
+        PrintStream print = new PrintStream(output);
+        print.print(true);
+        print.print(123);
+        print.print(123.456f);
+        print.printf(Locale.UK, "Text + data: %1$", 123);
+        print.close();
+    }
+
+    @Test
+    /** StringReader 将String转换为Reader */
+    public void testStringReader() throws Exception {
+        Reader reader = new StringReader("input string...");
+        int data = reader.read();
+        while (data != -1) {
+            data = reader.read();
+        }
+        reader.close();
+
+        //StringWriter
+        StringWriter writer = new StringWriter();
+        writer.write(65);   //写入数据
+        System.out.println(writer.toString());  //获取StringWriter中的字符串数据
+        StringBuffer dataBuffer = writer.getBuffer();   //获取StringWriter在内部构造字符串时所使用的StringBuffer对象
+        System.out.println(dataBuffer);
     }
 
 }
