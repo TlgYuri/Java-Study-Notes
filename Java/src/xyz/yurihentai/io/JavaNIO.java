@@ -2,11 +2,13 @@ package xyz.yurihentai.io;
 
 import org.junit.Test;
 
+import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.channels.SocketChannel;
+import java.nio.channels.*;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * description
@@ -51,7 +53,7 @@ public class JavaNIO {
                         limit=已经写入的数据容量，相当于写模式最后的position
                         position=当前尧读取的数据位置
             */
-            buffer.put((byte)65);   // 向缓冲区写入数据
+            buffer.put((byte) 65);   // 向缓冲区写入数据
             buffer.flip();  //从写模式切换到读模式
             while (buffer.hasRemaining()) {
                 System.out.println((char) buffer.get());    // 获取缓冲区的数据
@@ -73,17 +75,98 @@ public class JavaNIO {
     }
 
     @Test
-    /** SocketChannel */
+    /** ServerSocketChannel SocketChannel */
     public void testSocketChannel() throws Exception {
-        SocketChannel socketChannel = SocketChannel.open();
-        socketChannel.connect(new InetSocketAddress("127.0.0.1", 8080));
+        // 创建channel，建立连接
+        SocketChannel channel = SocketChannel.open();
+        channel.connect(new InetSocketAddress("127.0.0.1", 8080));
+        // 设置为非阻塞模式
+        // 此时调用connect()，该方法可能在连接建立之前就返回了。为了确定连接是否建立，可以调用finishConnect()方法
+        // while(!finishConnect) { }  在连接建立成功前等待、或做其他操作
+        channel.configureBlocking(false);
 
-        ByteBuffer allocate = ByteBuffer.allocate(64);
-        int readCount = socketChannel.read(allocate);
+        ByteBuffer buffer = ByteBuffer.allocate(64);
+        // 读取数据
+        int readCount = channel.read(buffer);
+        System.out.println("长度:" + readCount);
 
-        System.out.println(allocate.get());
+        buffer.flip();
+        while (buffer.hasRemaining()) {
+            // 写数据
+            channel.write(buffer);
+        }
 
-        socketChannel.close();
+        // 关闭通道
+        channel.close();
+    }
+
+    @Test
+    /** ServerSocketChannel */
+    public void testServerSocketChannel() throws Exception {
+        // 创建ServerSocketChannel，监听端口
+        ServerSocketChannel serverChannel = ServerSocketChannel.open();
+        serverChannel.socket().bind(new InetSocketAddress(8080));
+        // 设置为非阻塞模式，accpet()方法在没收到新的连接的情况下直接返回null
+        serverChannel.configureBlocking(false);
+        while (true) {
+            SocketChannel channel = serverChannel.accept();
+            if (channel != null) {
+                // do
+                channel.close();
+                break;
+            }
+        }
+        // 关闭通道
+        serverChannel.close();
+    }
+
+    @Test
+    /** ServerSocketChannel 和 SocketChannel 简单联调使用 */
+    public void testServerSocketAndSocketChannel() throws Exception {
+        // 创建一个线程执行ServerSocketChannel 监听端口并执行读写操作
+        new Thread(() -> {
+            try {
+                ServerSocketChannel server = ServerSocketChannel.open();
+                server.bind(new InetSocketAddress(8080));
+
+                SocketChannel channel = server.accept();
+                ByteBuffer buffer = ByteBuffer.allocate(64);
+                buffer.put((byte)65);
+                buffer.put((byte)66);
+                buffer.put((byte)67);
+                buffer.flip();
+                channel.write(buffer);
+                buffer.clear();
+                channel.read(buffer);
+                buffer.flip();
+                while(buffer.hasRemaining()) {
+                    System.out.println((char) buffer.get());
+                }
+                channel.close();
+                server.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }, "Server").start();
+
+        Thread.sleep(1000);
+
+        // 本线程内使用SocketChannel连接server 执行读写操作
+        SocketChannel channel = SocketChannel.open();
+        channel.connect(new InetSocketAddress("127.0.0.1", 8080));
+        ByteBuffer buffer = ByteBuffer.allocate(64);
+        channel.read(buffer);
+        buffer.flip();
+        while(buffer.hasRemaining()) {
+            System.out.println((char)buffer.get());
+        }
+        buffer.clear();
+        buffer.put((byte)68);
+        buffer.put((byte)69);
+        buffer.put((byte)70);
+        buffer.flip();
+        channel.write(buffer);
+        channel.close();
     }
 
     @Test
@@ -94,7 +177,7 @@ public class JavaNIO {
 
         ByteBuffer header = ByteBuffer.allocate(64);
         ByteBuffer body = ByteBuffer.allocate(128);
-        ByteBuffer[] bufferArray = { header, body };
+        ByteBuffer[] bufferArray = {header, body};
         channel.read(bufferArray);  // 此种方式当第一个buffer被写满后才会写入第二个buffer，因此对数据的格式大小要求非常严格
 
         channel.write(bufferArray); // buffer中有多少写入多少
@@ -111,7 +194,7 @@ public class JavaNIO {
         FileChannel outputChannel = output.getChannel();
         long position = 0;
         long count = inputChannel.size();
-        // SocketChannel可能存在写入数据不完全的情况 ↓
+        // SocketChannel只会传输此刻准备好的数据，可能存在写入数据不足count的情况 ↓
         outputChannel.transferFrom(inputChannel, position, count);  // 从output的position开始写入input的数据，最多写入count个  input数据少于count或output的capacity小于count等情况则以实际为准
         inputChannel.transferTo(position, count, outputChannel);
 
@@ -122,12 +205,102 @@ public class JavaNIO {
     @Test
     /** Selector 管理多个channel */
     public void testSelector() throws Exception {
-        //TODO 创建channel
-//        Selector selector = Selector.open();
-//        channel.configureBlocking(false);
-//        SelectionKey key = channel.register(selector, SelectionKey.OP_READ);
+        // 1、创建ssc
+        ServerSocketChannel server = ServerSocketChannel.open();
+        server.bind(new InetSocketAddress(8080));
+        // 要使用selector必须为非阻塞模式
+        server.configureBlocking(false);
 
+        // 2、创建selector
+        Selector selector = Selector.open();
+        // 3、将channel注册到Selector上
+        // register()方法将channel注册到指定的selector上
+        // register()方法第二个参数指定要监听什么事件  共四种：read、write、accept、connect
+        // 通道触发事件指该事件已经就绪。channel成功连接到另一个服务器称为“连接就绪”。一个ssc准备好接收新进入的连接称为“接收就绪”。一个有数据可读的通道可以说是“读就绪”。等待写数据的通道可以说是“写就绪”
+        // 监听多种事件可以用“|”连接：int interestSet = SelectionKey.OP_READ | SelectionKey.OP_WRITE;
+        SelectionKey selectionKey = server.register(selector, SelectionKey.OP_READ);
+        /* SelectionKey包含的内容
+               interestSet：通过与操作判断Set中是否包含了某种事件
+                            int interestSet = selectionKey.interestOps();
+                            boolean isInterestedInAccept  = (interestSet & SelectionKey.OP_ACCEPT) == SelectionKey.OP_ACCEPT；
+                            boolean isInterestedInConnect = interestSet & SelectionKey.OP_CONNECT;
+                            boolean isInterestedInRead    = interestSet & SelectionKey.OP_READ;
+                            boolean isInterestedInWrite   = interestSet & SelectionKey.OP_WRITE;
+
+               ready集合：通道已经准备就绪的操作的集合，通过interestSet类似手段判断是否就绪，或使用方法
+                            int readySet = selectionKey.readyOps();
+                            selectionKey.isAcceptable();
+                            selectionKey.isConnectable();
+                            selectionKey.isReadable();
+                            selectionKey.isWritable();
+
+               Channel：从SelectionKey访问Channel
+                            Channel  channel  = selectionKey.channel();
+
+               Selector：从SelectionKey访问Selector
+                            Selector keySelector = selectionKey.selector();
+
+               附加对象：
+                         1、通过selectKey附加
+                             附加：selectionKey.attach(theObject);
+                             获取：Object attachedObj = selectionKey.attachment();
+                         2、通过register()方法，在注册时附加
+                             SelectionKey key = channel.register(selector, SelectionKey.OP_READ, theObject);
+        */
+        // 4、通过Selector选择通道
+        // 返回值为此方法执行后就绪的通道个数
+        selector.select();  // 阻塞执行，直到至少有一个通道在你注册的事件上就绪了。
+//        selector.select(1000);  // 阻塞执行，直到超过timeout毫秒，或至少有一个通道在你注册的事件上就绪了。
+//        selector.selectNow(); // 立即返回，如果没有就绪的通道则返回0
+        // 5、获取已就绪的通道的key
+        Set selectedKeys = selector.selectedKeys();
+        Iterator keyIterator = selectedKeys.iterator();
+        while(keyIterator.hasNext()) {
+            SelectionKey key = (SelectionKey)keyIterator.next();
+            if(key.isAcceptable()) {
+                // a connection was accepted by a ServerSocketChannel
+            } else if (key.isConnectable()) {
+                // a connection was established with a remote server.
+            } else if (key.isReadable()) {
+                // a channel is ready for reading
+            } else if (key.isWritable()) {
+                // a channel is ready for writing
+            }
+            keyIterator.remove();
+        }
+        // 6、关闭Selector及所有相关SelectionKey实例，不会关闭通道本身
+        selector.close();
     }
 
+    @Test
+    /** DatagramChannel */
+    public void testDatagramChannel() throws Exception {
+        // 打开通道 绑定端口
+        DatagramChannel channel = DatagramChannel.open();
+        channel.socket().bind(new InetSocketAddress(8080));
+
+        ByteBuffer buffer = ByteBuffer.allocate(64);
+        buffer.clear();
+        // 接收数据  超出buffer容量的数据将被废弃
+        channel.receive(buffer);
+
+        buffer.clear();
+        buffer.put("Hello World!".getBytes());
+        buffer.flip();
+
+        // 发送数据  返回发送的字节数
+        // 基于udp，无法确认对方是否收到
+        int bytesSent = channel.send(buffer, new InetSocketAddress("127.0.0.1", 8080));
+        buffer.clear();
+
+        // UDP是无连接，因此connect()方法并不会真的建立一个连接，只是锁住channel，只从特定地址收发数据
+        channel.connect(new InetSocketAddress("127.0.0.1", 8080));
+        // 这样类似于传统通道的读写操作，但在数据传送方面没有任何保证
+        channel.read(buffer);
+        buffer.flip();
+        channel.write(buffer);
+
+        channel.close();
+    }
 
 }
