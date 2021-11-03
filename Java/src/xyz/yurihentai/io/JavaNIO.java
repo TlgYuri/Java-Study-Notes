@@ -131,15 +131,15 @@ public class JavaNIO {
 
                 SocketChannel channel = server.accept();
                 ByteBuffer buffer = ByteBuffer.allocate(64);
-                buffer.put((byte)65);
-                buffer.put((byte)66);
-                buffer.put((byte)67);
+                buffer.put((byte) 65);
+                buffer.put((byte) 66);
+                buffer.put((byte) 67);
                 buffer.flip();
                 channel.write(buffer);
                 buffer.clear();
                 channel.read(buffer);
                 buffer.flip();
-                while(buffer.hasRemaining()) {
+                while (buffer.hasRemaining()) {
                     System.out.println((char) buffer.get());
                 }
                 channel.close();
@@ -157,13 +157,13 @@ public class JavaNIO {
         ByteBuffer buffer = ByteBuffer.allocate(64);
         channel.read(buffer);
         buffer.flip();
-        while(buffer.hasRemaining()) {
-            System.out.println((char)buffer.get());
+        while (buffer.hasRemaining()) {
+            System.out.println((char) buffer.get());
         }
         buffer.clear();
-        buffer.put((byte)68);
-        buffer.put((byte)69);
-        buffer.put((byte)70);
+        buffer.put((byte) 68);
+        buffer.put((byte) 69);
+        buffer.put((byte) 70);
         buffer.flip();
         channel.write(buffer);
         channel.close();
@@ -255,9 +255,9 @@ public class JavaNIO {
         // 5、获取已就绪的通道的key
         Set selectedKeys = selector.selectedKeys();
         Iterator keyIterator = selectedKeys.iterator();
-        while(keyIterator.hasNext()) {
-            SelectionKey key = (SelectionKey)keyIterator.next();
-            if(key.isAcceptable()) {
+        while (keyIterator.hasNext()) {
+            SelectionKey key = (SelectionKey) keyIterator.next();
+            if (key.isAcceptable()) {
                 // a connection was accepted by a ServerSocketChannel
             } else if (key.isConnectable()) {
                 // a connection was established with a remote server.
@@ -302,5 +302,45 @@ public class JavaNIO {
 
         channel.close();
     }
+
+    @Test
+    /** Pipe 管道 */
+    public void testPipe() throws Exception {
+        // 管道是2个线程之间的单向数据连接
+        // ThreadA → (Pipe)sinkChannel → (Pipe)sourceChannel → ThreadB
+        Pipe pipe = Pipe.open();
+        new Thread(() -> {
+            Pipe.SinkChannel sink = pipe.sink();
+            ByteBuffer buffer = ByteBuffer.allocate(64);
+            buffer.clear();
+            buffer.put("Hello World!".getBytes());
+            buffer.flip();
+            while (buffer.hasRemaining()) {
+                try {
+                    int write = sink.write(buffer);
+                    System.out.println(Thread.currentThread().getName() + "传输的字节长度为：" + write);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, "ThreadA").start();
+        new Thread(() -> {
+            Pipe.SourceChannel sourceChannel = pipe.source();
+            ByteBuffer buffer = ByteBuffer.allocate(64);
+            try {
+                int bytesRead = sourceChannel.read(buffer);
+                System.out.println(Thread.currentThread().getName() + "读取到字节长度为：" + bytesRead);
+                buffer.flip();
+                while(buffer.hasRemaining()) {
+                    System.out.print((char)buffer.get());
+                }
+                System.out.println();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }, "ThreadB").start();
+    }
+
+    //TODO Path、Files、AsynchronousFileChannel
 
 }
