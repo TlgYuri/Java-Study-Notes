@@ -14,6 +14,20 @@ public class SerializableBean implements Serializable {
     private String age;
     private String gender;
 
+    public SerializableBean() {}
+
+    private SerializableBean(String name) {
+        this(name, null);
+    }
+    private SerializableBean(String name, String age) {
+        this(name, age, null);
+    }
+    private SerializableBean(String name, String age, String gender) {
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+    }
+
     public String getName() {
         return name;
     }
