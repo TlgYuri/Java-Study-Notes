@@ -1,7 +1,7 @@
-package xyz.yurihentai.reflection;
+package xyz.yurihentai.java.reflection;
 
 import org.junit.Test;
-import xyz.yurihentai.bean.SerializableBean;
+import xyz.yurihentai.java.pack.bean.SerializableBean;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;

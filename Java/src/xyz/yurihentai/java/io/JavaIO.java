@@ -1,7 +1,7 @@
-package xyz.yurihentai.io;
+package xyz.yurihentai.java.io;
 
-import xyz.yurihentai.bean.SerializableBean;
 import org.junit.Test;
+import xyz.yurihentai.java.pack.bean.SerializableBean;
 
 import java.io.*;
 import java.util.Arrays;

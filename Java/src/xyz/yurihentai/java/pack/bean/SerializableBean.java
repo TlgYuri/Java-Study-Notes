@@ -1,4 +1,4 @@
-package xyz.yurihentai.bean;
+package xyz.yurihentai.java.pack.bean;
 
 import java.io.Serializable;
 

@@ -1,11 +1,4 @@
-package xyz.yurihentai.io.nio.socketchannel;
-
-/**
- * description
- * 参考博客：https://blog.csdn.net/ycgslh/article/details/79604074
- * @author Yuri
- * @date 2021/11/1 11:45:14
- */
+package xyz.yurihentai.java.io.nio.socketchannel;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -14,6 +7,12 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 
+/**
+ * description
+ * 参考博客：https://blog.csdn.net/ycgslh/article/details/79604074
+ * @author Yuri
+ * @date 2021/11/1 11:45:14
+ */
 public class SocketChannelHandler {
     private int bufferSize = 1024;  // 缓冲器容量
     private String localCharset = "UTF-8";  // 编码格式
