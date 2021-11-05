@@ -1,4 +1,4 @@
-package xyz.yurihentai.io.nio;
+package xyz.yurihentai.io.nio.socketchannel;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

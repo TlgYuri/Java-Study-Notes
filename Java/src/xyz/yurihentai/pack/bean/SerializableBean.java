@@ -1,4 +1,4 @@
-package xyz.yurihentai.io.bean;
+package xyz.yurihentai.bean;
 
 import java.io.Serializable;
 
@@ -16,7 +16,7 @@ public class SerializableBean implements Serializable {
 
     public SerializableBean() {}
 
-    private SerializableBean(String name) {
+    public SerializableBean(String name) {
         this(name, null);
     }
     private SerializableBean(String name, String age) {
@@ -26,6 +26,10 @@ public class SerializableBean implements Serializable {
         this.name = name;
         this.age = age;
         this.gender = gender;
+    }
+
+    public int add(int a, int b) {
+        return a + b;
     }
 
     public String getName() {
