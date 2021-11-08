@@ -1,9 +1,13 @@
 package xyz.yurihentai.java.net;
 
+import org.junit.Test;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 
 /**
  * description
@@ -18,6 +22,19 @@ public class Net {
         Net.testSocket();
         Net.testDatagramSocket();
         Net.testUrl();
+    }
+
+    @Test
+    /** InetAddress */
+    public void testInetAddress() throws UnknownHostException {
+//        InetAddress 是 Java 对 IP 地址的封装。这个类的实例经常和 UDP DatagramSockets 和 Socket，ServerSocket 类一起使用。
+        // 根据域名获取实例
+        InetAddress address1 = InetAddress.getByName("yurihentai.xyz");
+        // 根据IP地址获取实例
+        InetAddress address2 = InetAddress.getByName("127.0.0.1");
+        // 获取本机ip的实例
+        InetAddress address3 = InetAddress.getLocalHost();
+        // ……do it yourself……
     }
 
     /**
@@ -70,8 +87,6 @@ public class Net {
                 DatagramSocket datagramSocket = new DatagramSocket();
                 // 单个UDP数据包可发送的数据最大长度为65508  具体参考计算机网络原理
 //                byte[] buffer = new byte[65508];
-//                InetAddress address = InetAddress.getByName("yurihentai.xyz");
-//                InetAddress address = InetAddress.getByAddress("127.0.0.1".getBytes());
                 byte[] buffer = "Hello World!".getBytes(StandardCharsets.UTF_8);
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length, InetAddress.getLocalHost(), 80);
                 datagramSocket.send(packet);
@@ -97,15 +112,50 @@ public class Net {
     }
 
     public static void testUrl() throws Exception {
+        // 访问远程资源
         URL url = new URL("http://yurihentai.xyz");
         URLConnection urlConnection = url.openConnection();
+        // 默认发送get请求
         InputStream input = urlConnection.getInputStream();
         int data = input.read();
-        while(data != -1){
+        while (data != -1) {
             System.out.print((char) data);
             data = input.read();
         }
         input.close();
+
+        // POST
+        URL urlPost = new URL("http://yurihentai.xyz");
+        URLConnection urlPostConnection = urlPost.openConnection();
+        urlPostConnection.setDoOutput(true);
+        OutputStream outputStream = urlPostConnection.getOutputStream();
+        String postData = URLEncoder.encode("Hello World!", StandardCharsets.UTF_8.name());
+        outputStream.write(postData.getBytes());
+        outputStream.flush();
+        outputStream.close();
+
+
+        // 打开本地文件
+        URL localUrl = new URL("file:/e:/testInput.txt");
+        URLConnection localUrlConnection = url.openConnection();
+        InputStream localInput = localUrlConnection.getInputStream();
+        int localData = input.read();
+        while (localData != -1) {
+            System.out.print((char) localData);
+            localData = input.read();
+        }
+        localInput.close();
+    }
+
+    @Test
+    /** JarURLConnection */
+    public void testJarUrlConnection() throws Exception {
+        String urlString = "http://butterfly.jenkov.com/container/download/jenkov-butterfly-container-2.9.9-beta.jar";
+        URL jarUrl = new URL(urlString);
+        JarURLConnection connection = null;
+//        connection new JarURLConnection(jarUrl);
+        Manifest manifest = connection.getManifest();
+        JarFile jarFile = connection.getJarFile();
     }
 
 }
