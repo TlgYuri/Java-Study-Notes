@@ -2,6 +2,9 @@ package xyz.yurihentai.java.concurrent;
 
 import org.junit.Test;
 
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+
 /**
  * description
  * 学习自：http://ifeve.com/java-concurrency-thread-directory/
@@ -31,6 +34,89 @@ public class Concurrent {
             System.out.println(Thread.currentThread().getName());
         }, "TestRunnable");
         thread2.start();
+    }
+
+    /* 内存模型
+        每个线程拥有一个独立的栈内存，保存方法信息和基本数据类型，使用到的对象在栈中保存的是对象的引用，实际对象存储在堆中。
+        全局变量保存在堆中。
+        基本数据类型通常保存在栈中，但实例对象中定义的的基本数据类型，会与该对象一同保存在堆中。
+    */
+
+    @Test
+    /** synchronized 同步 */
+    public void testSynchronized() {
+        // 同步时会使用一个对象作为同步的监视器，使用同一个对象同步的方法或代码块同时只能有一个线程访问执行，其他线程访问时会被阻塞
+        // 使用class对象同步，区别于使用实例对象同步，一个类在jvm中只会加载一次
+        // 同步方法 synchronized修饰的方法
+        //      静态方法：同步对象是本类  public static synchronized String add() {}
+        //      普通方法：同步对象是当前实例  public synchronized String add() {}
+        // 同步代码块 可以自己指定同步的对象  synchronized(this) {}
+    }
+
+    @Test
+    /** 线程通信  Object类提供的方法：wait、notify、notifyAll */
+    public void testWaitNotify() {
+        Object lock = new Object();
+        Thread thread1 = new Thread(()->{
+            synchronized (lock) {
+                try {
+                    System.out.println(Thread.currentThread().getName() + "等待");
+                    lock.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            System.out.println(Thread.currentThread().getName() + "已被唤醒");
+        });
+        Thread thread2 = new Thread(()->{
+            synchronized (lock) {
+                System.out.println(Thread.currentThread().getName() + "准备唤醒");
+                lock.notifyAll();
+            }
+        });
+        thread1.start();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        thread2.start();
+    }
+
+    @Test
+    /** ThreadLocal 不同线程设置不同的值，获取时获取自己设置的值，不会覆盖其他线程的值 */
+    public void testThreadLocal() {
+        // 子类InheritableThreadLocal  允许子线程获取到父线程设置的值
+        ThreadLocal tl = new ThreadLocal<String>();  // 不设置泛型时返回Object  需要做转型操作
+
+        Thread tA = new Thread(()->{
+            tl.set("Thread-A" + new Random().nextInt());
+            try {
+                TimeUnit.SECONDS.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("tA:" + tl.get());
+        });
+
+        Thread tB = new Thread(()-> {
+            tl.set("Thread-B" + new Random().nextInt());
+            try {
+                TimeUnit.SECONDS.sleep(5);
+                tA.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("tB:" + tl.get());
+        });
+
+        tA.start();
+        tB.start();
+        try {
+            tA.join();  // JUnitTest这里需要手动join一次  否则不会执行多线程
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }
