@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * description
@@ -117,6 +118,17 @@ public class Concurrent {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    /** CAS 比较并替换  java.util.concurrent.atomic包 原子操作 */
+    public void testCAS() {
+        AtomicInteger ai = new AtomicInteger(1);
+        // 当变量值与预期一致时，替换为目标值    方法返回boolean，标志替换操作是否成功
+        ai.compareAndSet(1,2);
+        System.out.println(ai);
+        ai.compareAndSet(1,2);
+        System.out.println(ai);
     }
 
 }
