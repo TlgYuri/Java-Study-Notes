@@ -304,7 +304,7 @@ public class JavaIO {
     @Test
     /** PrintStream 将数据原样文本化输出，而不是输出为字节数据 */
     public void testPrintStream() throws Exception {
-        //PringWriter与此类似
+        //PrintWriter与此类似
         FileOutputStream output = new FileOutputStream("E:\\testOutput.txt");
         PrintStream print = new PrintStream(output);
         print.print(true);
