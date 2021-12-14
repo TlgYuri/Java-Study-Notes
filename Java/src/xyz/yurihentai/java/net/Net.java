@@ -19,8 +19,6 @@ import java.util.jar.Manifest;
 public class Net {
 
     public static void main(String args[]) throws Exception {
-        Net.testSocket();
-        Net.testDatagramSocket();
         Net.testUrl();
     }
 
@@ -37,11 +35,10 @@ public class Net {
         // ……do it yourself……
     }
 
-    /**
-     * TCP连接 Socket
-     */
-    public static void testSocket() {
-        new Thread(() -> {
+    @Test
+    /** TCP连接 Socket */
+    public void testSocket() {
+        Thread ta = new Thread(() -> {
             try (ServerSocket serverSocket = new ServerSocket(80)) {
                 boolean isStopped = false;
                 while (!isStopped) {
@@ -60,9 +57,9 @@ public class Net {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }, "server").start();
+        }, "server");
 
-        new Thread(() -> {
+        Thread tb = new Thread(() -> {
             try (Socket socket = new Socket("127.0.0.1", 80);
                  OutputStream out = socket.getOutputStream()) {
                 // ======= 写入数据 =======
@@ -73,16 +70,22 @@ public class Net {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }, "client").start();
+        }, "client");
+        ta.start();
+        tb.start();
 
+        try {
+            ta.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
-    /**
-     * UDP DatagramSocket
-     */
-    public static void testDatagramSocket() {
+    @Test
+    /** UDP DatagramSocket */
+    public void testDatagramSocket() {
         // ======= 发送 =======
-        new Thread(() -> {
+        Thread ta = new Thread(() -> {
             try {
                 DatagramSocket datagramSocket = new DatagramSocket();
                 // 单个UDP数据包可发送的数据最大长度为65508  具体参考计算机网络原理
@@ -93,10 +96,10 @@ public class Net {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }, "send").start();
+        }, "send");
 
         // ======= 接收 =======
-        new Thread(() -> {
+        Thread tb = new Thread(() -> {
             try {
                 DatagramSocket datagramSocket = new DatagramSocket(80);
                 byte[] buffer = new byte[65508];
@@ -108,7 +111,16 @@ public class Net {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }, "receive").start();
+        }, "receive");
+
+        ta.start();
+        tb.start();
+
+        try {
+            ta.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void testUrl() throws Exception {
