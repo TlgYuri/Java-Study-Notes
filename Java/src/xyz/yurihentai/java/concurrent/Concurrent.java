@@ -129,6 +129,27 @@ public class Concurrent {
         System.out.println(ai);
         ai.compareAndSet(1,2);
         System.out.println(ai);
+
+        Thread ta = null;
+        for (int i = 0; i < 5 ; i++) {
+            ta = new Thread(() -> {
+                for (int j = 0; j <= 9; j++) {
+                    boolean update = false;
+                    while (!update) { // 尝试更新，如果更新失败则继续重试
+                        int temp = ai.get();
+                        update = ai.compareAndSet(temp, temp + 1);
+                        System.out.println(Thread.currentThread().getName() + "-更新状态-" + update + "\n当前值：" + ai.get());
+                    }
+                }
+            }, "Thread" + i);
+            ta.start();
+        }
+
+        try {
+            ta.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }
