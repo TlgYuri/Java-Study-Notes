@@ -1,10 +1,16 @@
 package xyz.yurihentai.java.concurrent;
 
 import org.junit.Test;
+import xyz.yurihentai.java.concurrent.lock.MyCache;
+import xyz.yurihentai.java.concurrent.lock.ThreadData;
 
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * description
@@ -13,6 +19,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @date 2021/11/16 11:45:14
  */
 public class Concurrent {
+
+    // 线程从java最早期的版本开始就有，但juc是从jdk1.5才开始提供的
 
     @Test
     /** Thread 启动线程 */
@@ -31,10 +39,21 @@ public class Concurrent {
         // 第二个位置参数可以指定线程的名称
         Thread thread2 = new Thread(()->{
             System.out.println("Hello Runnable!");
+            try {
+                // 让当前线程等待指定时间，单位毫秒
+                Thread.sleep(2000);
+                // jdk1.5 开始让当前线程等待的另一种方式，TimeUnit中的时间单位有多种可选
+                TimeUnit.SECONDS.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             // 获取当前执行的线程，然后获取线程名称
             System.out.println(Thread.currentThread().getName());
         }, "TestRunnable");
         thread2.start();
+        // 设置线程的优先级  最大：Thread.MAX_PRIORITY;  普通（默认）：Thread.MIN_PRIORITY;  最小：Thread.NORM_PRIORITY;
+        thread2.setPriority(Thread.MAX_PRIORITY);
+        // thread.stop(); // 方法用于停止线程，但此方法的操作并不安全，在停止线程的同时会释放线程所拥有的锁，此时可能会有未妥善处理的同步的操作
     }
 
     /* 内存模型
@@ -57,6 +76,7 @@ public class Concurrent {
     @Test
     /** 线程通信  Object类提供的方法：wait、notify、notifyAll */
     public void testWaitNotify() {
+        // suspend（挂起）和resume（恢复）方法效果类似，但是不安全，与stop方法一样被废除不推荐使用
         Object lock = new Object();
         Thread thread1 = new Thread(()->{
             synchronized (lock) {
@@ -121,7 +141,7 @@ public class Concurrent {
     }
 
     @Test
-    /** CAS 比较并替换  java.util.concurrent.atomic包 原子操作 */
+    /** CAS 比较并替换  java.util.concurrent.atomic包 原子变量 */
     public void testCAS() {
         AtomicInteger ai = new AtomicInteger(1);
         // 当变量值与预期一致时，替换为目标值    方法返回boolean，标志替换操作是否成功
@@ -138,6 +158,8 @@ public class Concurrent {
                     while (!update) { // 尝试更新，如果更新失败则继续重试
                         int temp = ai.get();
                         update = ai.compareAndSet(temp, temp + 1);
+//                        ai.incrementAndGet(); // 自增然后获取
+//                        ai.getAndIncrement(); // 获取然后自减
                         System.out.println(Thread.currentThread().getName() + "-更新状态-" + update + "\n当前值：" + ai.get());
                     }
                 }
@@ -149,6 +171,134 @@ public class Concurrent {
             ta.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Test
+    /** interrupt 中断 */
+    public void testInterrupt() {
+        // 判断当前线程是否接收到中断信号，调用方法后清除中断状态
+        boolean interrupted = Thread.interrupted();
+        Thread thread = new Thread();
+        // 判断指定线程是否接收到中断信号，不改变中断状态
+        boolean interrupted1 = thread.isInterrupted();
+        // 发送中断信号
+        thread.interrupt();
+        try {
+            // 在执行时如果线程被中断会抛出异常
+            Thread.sleep(5);
+            thread.join(5);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return;
+        }
+    }
+
+    @Test
+    /** Lock 锁 */
+    public void testLock() {
+        ThreadData data = new ThreadData();
+        Thread ta = new Thread(() -> {
+            for (int i = 0; i < 10; i++) {
+                data.setDataEmpty();
+            }
+        }, "置空");
+        Thread tb = new Thread(() -> {
+            for (int i = 0; i < 10; i++) {
+                data.setDataNull();
+            }
+        }, "置Null");
+
+        ta.start();
+        tb.start();
+
+        try {
+            ta.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    /** ReadWriteLock 读写锁 */
+    public void testReadWriteLock() {
+
+        ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+        MyCache cache = new MyCache();
+
+        Thread thread = null;
+        for (int i = 0; i < 3 ; i++) {
+            final int a = i;
+            new Thread(()->{
+                //写锁（独占锁，没有任何其他锁时才能获取到）
+                lock.writeLock().lock();
+                try {
+                    System.out.println("线程【" + Thread.currentThread().getName() + "】准备写入-");
+                    cache.insert(a+"",a);
+                    System.out.println("线程【" + Thread.currentThread().getName() + "】写入完成---");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    //释放锁
+                    lock.writeLock().unlock();
+                }
+            }, "Thread-" + i).start();
+
+            thread = new Thread(()->{
+                //读锁（共享锁，同时可以有多个读锁共存）
+                lock.readLock().lock();
+                try {
+                    System.out.println("线程【" + Thread.currentThread().getName() + "】准备读取+");
+                    TimeUnit.MILLISECONDS.sleep(200);
+                    System.out.println("线程【" + Thread.currentThread().getName() + "】读取完成，值为:【" +cache.select(a+"") + "】+++");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    //释放锁
+                    lock.readLock().unlock();
+                }
+            }, "Thread-" + (i+3));
+            thread.start();
+        }
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    /** Executor 执行器（线程池是最常见的一种执行器的实现） */
+    public void testExecutor() {
+        // Executor接口 通过execute(Runnable)启动线程
+        // ExecutorService接口 继承了 Executor接口  扩展新增了submit(Runnable/Callable) 等操作
+        // ScheduledExecutorService 继承了 ExecutorService接口  扩展新增了延时执行schedule()，按指定时间间隔定期执行任务的方法scheduleAtFixedRate()、scheduleWithFixedDelay()
+
+        /* Executors类提供一些java进行默认参数设置的线程池的获取方法
+                创建一个线程数量固定的线程池:  Executors.newFixedThreadPool(int n);
+                    在初始化时指定手动线程的数量，等待队列长度默认为(Integer.MAX_VALUE），队列长度过大，容易导致OOM异常
+                创建一个容量可扩展的线程池:    Executors.newCachedThreadPool();
+                    当线程不够用时会扩展新的线程，最大线程数为Integer.MAX_VALUE，容易导致OOM异常
+                创建一个单个线程的线程池:     Executors.newSingleThreadExecutor();
+                    始终只有一个线程，当等待队列过长时(最多Integer.MAX_VALUE）容易导致OOM异常
+                ……
+         */
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        for(int i = 0; i < 10; i++) {
+            executorService.execute(() -> {
+                System.out.println(Thread.currentThread().getName());
+            });
+        }
+    }
+
+    @Test
+    /** ThreadLocalRandom 并发随机数 */
+    public void testRandom() {
+        // 对于并发访问，使用TheadLocalRandom代替Math.random()可以减少竞争，从而获得更好的性能。
+        ThreadLocalRandom current = ThreadLocalRandom.current();
+        for (int i = 0; i < 10 ; i++) {
+            System.out.println(current.nextInt(69,96));
         }
     }
 
