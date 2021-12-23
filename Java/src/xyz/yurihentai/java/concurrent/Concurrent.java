@@ -5,10 +5,7 @@ import xyz.yurihentai.java.concurrent.lock.MyCache;
 import xyz.yurihentai.java.concurrent.lock.ThreadData;
 
 import java.util.Random;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -275,7 +272,7 @@ public class Concurrent {
         // ExecutorService接口 继承了 Executor接口  扩展新增了submit(Runnable/Callable) 等操作
         // ScheduledExecutorService 继承了 ExecutorService接口  扩展新增了延时执行schedule()，按指定时间间隔定期执行任务的方法scheduleAtFixedRate()、scheduleWithFixedDelay()
 
-        /* Executors类提供一些java进行默认参数设置的线程池的获取方法
+        /* Executors类提供一些java进行默认参数设置的线程池的获取方法，但存在多种问题，因此一般使用自定义的线程池实现 new ThreadPoolExecutor()
                 创建一个线程数量固定的线程池:  Executors.newFixedThreadPool(int n);
                     在初始化时指定手动线程的数量，等待队列长度默认为(Integer.MAX_VALUE），队列长度过大，容易导致OOM异常
                 创建一个容量可扩展的线程池:    Executors.newCachedThreadPool();

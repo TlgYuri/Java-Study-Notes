@@ -247,8 +247,7 @@ public class JavaNIO {
                          2、通过register()方法，在注册时附加
                              SelectionKey key = channel.register(selector, SelectionKey.OP_READ, theObject);
         */
-        // 4、通过Selector选择通道
-        // 返回值为此方法执行后就绪的通道个数
+        // 4、通过Selector选择通道，返回值为此方法执行后就绪的通道个数
         selector.select();  // 阻塞执行，直到至少有一个通道在你注册的事件上就绪了。
 //        selector.select(1000);  // 阻塞执行，直到超过timeout毫秒，或至少有一个通道在你注册的事件上就绪了。
 //        selector.selectNow(); // 立即返回，如果没有就绪的通道则返回0

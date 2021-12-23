@@ -18,7 +18,7 @@ import java.util.jar.Manifest;
  */
 public class Net {
 
-    public static void main(String args[]) throws Exception {
+    public static void main(String[] args) throws Exception {
         Net.testUrl();
     }
 

@@ -253,10 +253,12 @@ public class JavaIO {
 
         //输出
         DataOutputStream output = new DataOutputStream(new FileOutputStream("binary.data"));
+        //byte data
         output.write(45);
-        //byte data output.writeInt(4545);
-        //int data output.writeDouble(109.123);
-        //double data  output.close();
+        //int data
+        output.writeInt(4545);
+        //double data
+        output.writeDouble(109.123);
         output.close();
     }
 
