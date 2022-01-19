@@ -4,7 +4,10 @@ import org.junit.Test;
 import xyz.yurihentai.java.pack.bean.SerializableBean;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
 /**
@@ -28,7 +31,7 @@ public class Reflection {
         // 2
         Class<? extends SerializableBean> serializableBeanClass2 = new SerializableBean().getClass();
         // 3  这里的参数需要是包含包名在内的类的全限定名
-        Class<?> serializableBeanClass3 = Class.forName("xyz.yurihentai.bean.SerializableBean");
+        Class<?> serializableBeanClass3 = Class.forName("xyz.yurihentai.java.pack.bean.SerializableBean");
 
         // ======= 获取类的访问修饰符 以一个位标识表示  可以通过Modifier类进行判断验证 =======
         int modifier = serializableBeanClass1.getModifiers();
@@ -45,7 +48,7 @@ public class Reflection {
 
         // ======= 获取类的构造器 =======
         Constructor<?>[] constructors = serializableBeanClass1.getConstructors();   // 公有
-        Constructor<?>[] declaredConstructors = serializableBeanClass1.getDeclaredConstructors();   // 全部
+        Constructor<?>[] declaredConstructors = serializableBeanClass1.getDeclaredConstructors();   // 全部(不包含父类的构造)
 
         // ======= 获取类的方法 =======
         Method[] methods = serializableBeanClass1.getMethods(); // 公有
@@ -119,6 +122,18 @@ public class Reflection {
         // 调用特定对象的该方法
         Object invoke = declaredMethod.invoke(bean, 114, 514);
         System.out.println(invoke);
+    }
+
+    @Test
+    /** 修饰符 */
+    public void testModifier() {
+        SerializableBean bean = new SerializableBean();
+        Class aClass = bean.getClass();
+        // 获取类的修饰符(Field、Method同)
+        int modifiers = aClass.getModifiers();
+        // 将修饰符转化为好理解的方式  public 、 private等
+        String modifName = Modifier.toString(modifiers);
+        System.out.println(modifName);
     }
 
 }
