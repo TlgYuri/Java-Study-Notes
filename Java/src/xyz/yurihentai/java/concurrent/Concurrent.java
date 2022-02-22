@@ -299,4 +299,30 @@ public class Concurrent {
         }
     }
 
+    @Test
+    /** Callable、FutureTask */
+    public void TestCallable() throws Exception {
+        // 与Runnable类似，都是异步任务   区别在于callable中的方法名为call，且有返回值
+        Callable<Integer> callable = new Callable() {
+            @Override
+            public Integer call() throws Exception {
+                return 114514;
+            }
+        };
+        // FutureTask、Thread都直接或间接的实现了Runnble接口
+        FutureTask ft = new FutureTask(callable);
+        Thread thread = new Thread(ft);
+        thread.start();
+        //判断任务是否执行完成
+        ft.isDone();
+        // 如果任务未开始，则取消
+        // 如果任务已开始，且参数为true，则将任务中断
+//        ft.cancel(true);
+        // 获取计算结果，计算未完成时阻塞  如果被中断则抛出InterruptedException，如果被取消则抛出CancellationException
+        Object o = ft.get();
+        // 获取计算结果，超时后抛出TimeOutException
+//        Object o1 = ft.get(5L, TimeUnit.SECONDS);
+        System.out.println(o);
+    }
+
 }
