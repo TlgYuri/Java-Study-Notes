@@ -105,7 +105,8 @@ public class Concurrent {
     /** ThreadLocal 不同线程设置不同的值，获取时获取自己设置的值，不会覆盖其他线程的值 */
     public void testThreadLocal() {
         // 子类InheritableThreadLocal  允许子线程获取到父线程设置的值
-        ThreadLocal tl = new ThreadLocal<String>();  // 不设置泛型时返回Object  需要做转型操作
+        // 不设置泛型时返回Object类型  需要做转型操作
+        ThreadLocal tl = new ThreadLocal<String>();
 
         Thread tA = new Thread(()->{
             tl.set("Thread-A" + new Random().nextInt());
