@@ -6,12 +6,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @Controller
 public class TestController {
 
-    @RequestMapping(value = {"/", "/Yuri"}, params = {"username","age!=10"}, headers = {"Accept-Language=en-US,zh;q=0.8" }) //指定参数name，age，且age不能为69  指定header
+    @RequestMapping(value = {"/", "/Yuri"}, params = {"username","age!=69"}, headers = {"Accept-Language=en-US,zh;q=0.8" }) //指定参数必须包含username，age，且age不能为69  指定header
     public String index(String username, Integer age) {
         System.out.println(username + age);
         return "success";
@@ -26,9 +27,24 @@ public class TestController {
     }
 
     @ResponseBody   //返回为JSON数据，而不是视图
-    @RequestMapping("/pathVariable/{value}")  //占位符需要与注解中的参数名保持一致
+    @RequestMapping("/pathVariable/{value}")  //路径变量  占位符需要与注解中的参数名保持一致
     public String pathVariable(@PathVariable("value") String value) {
         return value;
+    }
+
+    /**
+        矩阵变量(与路径变量绑定)  默认禁用，需要配置启用
+        语法：/matrix/path;age=24;code=114,514
+        多个值可以逗号分隔也可以写多次  如code=114;code=514
+    */
+    @RequestMapping("matrix/{path}")
+    public String testMatrix(@MatrixVariable(value = "age", pathVar = "path", required = false) Integer age, // pathVar: 当不同路径变量上绑定的矩阵变量名称相同时，用于区别要从那个路径变量上获取矩阵变量的值
+                             @MatrixVariable(value = "code", pathVar = "path" ,required = false) List<String> code,
+                             @PathVariable("path") String path) {
+        System.out.println(age);
+        System.out.println(code);
+        System.out.println(path);
+        return "success";
     }
 
     @RequestMapping(value = "rest", method = RequestMethod.PUT)  //表单提交方式为POST 同时有一个参数”_method“值为对应的请求方式  且需要web.xml配置 org.springframework.web.filter.HiddenHttpMethodFilter
@@ -57,7 +73,9 @@ public class TestController {
 //        return result;
 //    }
 
-    //需要配置Bean(依赖jar包 commons-io 和 commons-fileupload) ： org.springframework.web.multipart.commons.CommonsMultipartResolver
+    /**
+     * 需要配置Bean : org.springframework.web.multipart.commons.CommonsMultipartResolver(依赖jar包 commons-io 和 commons-fileupload)
+     */
     @RequestMapping("uploadFile")
     public String testMultipartFileUpload(@RequestPart MultipartFile file, String desc) {  // 通过form-data传递请求参数
         System.out.println(desc);

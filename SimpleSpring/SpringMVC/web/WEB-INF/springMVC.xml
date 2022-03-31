@@ -13,13 +13,17 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
-    <mvc:annotation-driven/>
+    <!--
+        注册 RequestMappingHandlerMapping 和 RequestMappingHandlerAdapter，用于解析RequestMapping的映射
+        enable-matrix-variables="true" : 启用矩阵变量
+    -->
+    <mvc:annotation-driven enable-matrix-variables="true"/>
 
     <!-- 静态资源解析器 -->
     <mvc:default-servlet-handler/>
 
     <!-- 访问这个路径时直接跳到对应页面 -->
-    <mvc:view-controller path="/vieController" view-name="success"/>
+    <mvc:view-controller path="/viewController" view-name="success"/>
 
     <!-- 文件上传解析器 -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
@@ -32,6 +36,5 @@
     <mvc:interceptors>
         <bean id="firstHandlerInterceptor" class="xyz.yurihentai.controller.interceptor.TestInterceptor"></bean>
     </mvc:interceptors>
-
 
 </beans>
