@@ -7,6 +7,7 @@ server:
 
 eureka:
   instance:
+    # 集群时多个注册中心不能为同一个host
     hostname: localhost
   client:
     #是否注册到注册中心  本服务作为注册中心，因此false
@@ -14,4 +15,8 @@ eureka:
     #是否获取注册中心注册的其他服务的服务地址
     fetch-registry: false
     service-url:
+      # 注册中心配置集群，只需要启动多个，互相注册即可（default-zone自己以外的所有注册中心，多个用逗号分隔）
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  # 自我保护机制  防止某些特殊情况下暂时未接受到服务心跳，但服务实际存活  促使不会立即删除服务的注册信息
+  server:
+    enable-self-preservation: true
