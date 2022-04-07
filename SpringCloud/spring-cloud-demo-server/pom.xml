@@ -10,9 +10,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>xyz.yurihentai.frameworktest.springcloud</groupId>
     <artifactId>spring-cloud-demo-server</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
 
     <name>spring-cloud-demo-server</name>
     <description>Demo project for SpringCloud</description>

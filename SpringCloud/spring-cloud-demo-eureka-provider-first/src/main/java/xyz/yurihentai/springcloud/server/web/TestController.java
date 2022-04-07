@@ -1,4 +1,4 @@
-package server.web;
+package xyz.yurihentai.springcloud.server.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
