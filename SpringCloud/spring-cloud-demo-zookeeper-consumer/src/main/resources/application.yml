@@ -1,0 +1,10 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: spring-cloud-zookeeper-consumer
+  cloud:
+    #注册到zookeeper地址
+    zookeeper:
+      connect-string: localhost:2181

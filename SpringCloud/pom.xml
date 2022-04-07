@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.2</version>
+        <version>2.4.2</version>xyz.yurihentai.springcloud.server
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -24,8 +24,8 @@
         <module>spring-cloud-demo-eureka-provider-first</module>
         <module>spring-cloud-demo-eureka-provider-second</module>
         <!-- 使用zookeeper作为注册中心 -->
-        <module>spring-cloud-demo-zookeeper-registry</module>
-        <module>spring-cloud-demo-eureka-provider</module>
+        <module>spring-cloud-demo-zookeeper-provider</module>
+        <module>spring-cloud-demo-zookeeper-consumer</module>
     </modules>
 
     <properties>
