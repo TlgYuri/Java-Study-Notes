@@ -10,10 +10,10 @@
     </parent>
 
     <groupId>xyz.yurihentai.frameworktest.springcloud</groupId>
-    <artifactId>spring-cloud-demo-provider-first</artifactId>
+    <artifactId>spring-cloud-demo-eureka-provider-second</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
-    <name>spring-cloud-demo-provider-first</name>
+    <name>spring-cloud-demo-eureka-provider-second</name>
     <description>Demo project for SpringCloud</description>
 
     <properties>
@@ -26,7 +26,6 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- 服务注册 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>

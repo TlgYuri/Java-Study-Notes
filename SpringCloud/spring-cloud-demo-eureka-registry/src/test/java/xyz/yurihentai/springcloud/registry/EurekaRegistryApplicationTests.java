@@ -1,10 +1,10 @@
-package com.yurihentai.springcloud.registry;
+package xyz.yurihentai.springcloud.registry;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class RegistryApplicationTests {
+class EurekaRegistryApplicationTests {
 
     @Test
     void contextLoads() {
