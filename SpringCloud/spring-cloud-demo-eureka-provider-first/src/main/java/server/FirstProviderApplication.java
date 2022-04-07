@@ -1,8 +1,7 @@
-package xyz.yurihentai.springcloud.server;
+package server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 // 开启Eureka的客户端服务（主要Eureka用
