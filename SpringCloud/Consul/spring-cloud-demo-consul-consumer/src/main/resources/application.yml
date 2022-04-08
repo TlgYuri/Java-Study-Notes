@@ -12,3 +12,16 @@ spring:
       discovery:
         #hostname: 127.0.0.1
         service-name: ${spring.application.name}
+
+
+# 指定特定服务的轮询规则
+cloud-consul-provider: # 服务名
+  ribbon:
+    # 目标轮询规则的全类名
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.BestAvailableRule
+
+# 开启饿加载（默认懒加载，第一次访问时需要创建LoadBalanceClient，会导致请求时间延长）
+ribbon:
+  eager-load:
+    enabled: true
+    clients: cloud-consul-provider # 多个采用逗号分隔

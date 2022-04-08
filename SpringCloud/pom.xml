@@ -18,16 +18,17 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>spring-cloud-demo-server</module>
+        <module>eureka/spring-cloud-demo-server</module>
         <!-- 使用eureka作为注册中心 -->
-        <module>spring-cloud-demo-eureka-registry</module>
-        <module>spring-cloud-demo-eureka-provider-first</module>
-        <module>spring-cloud-demo-eureka-provider-second</module>
+        <module>eureka/spring-cloud-demo-eureka-registry</module>
+        <module>eureka/spring-cloud-demo-eureka-provider-first</module>
+        <module>eureka/spring-cloud-demo-eureka-provider-second</module>
         <!-- 使用zookeeper作为注册中心 -->
-        <module>spring-cloud-demo-zookeeper-provider</module>
-        <module>spring-cloud-demo-zookeeper-consumer</module>
-        <module>spring-cloud-demo-consul-provider</module>
-        <module>spring-cloud-demo-consul-consumer</module>
+        <module>zookeeper/spring-cloud-demo-zookeeper-provider</module>
+        <module>zookeeper/spring-cloud-demo-zookeeper-consumer</module>
+        <!-- 使用consul作为注册中心 -->
+        <module>consul/spring-cloud-demo-consul-provider</module>
+        <module>consul/spring-cloud-demo-consul-consumer</module>
     </modules>
 
     <properties>
