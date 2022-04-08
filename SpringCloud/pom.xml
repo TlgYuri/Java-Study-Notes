@@ -26,6 +26,8 @@
         <!-- 使用zookeeper作为注册中心 -->
         <module>spring-cloud-demo-zookeeper-provider</module>
         <module>spring-cloud-demo-zookeeper-consumer</module>
+        <module>spring-cloud-demo-consul-provider</module>
+        <module>spring-cloud-demo-consul-consumer</module>
     </modules>
 
     <properties>
