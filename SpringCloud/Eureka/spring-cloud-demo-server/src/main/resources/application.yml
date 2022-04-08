@@ -14,6 +14,7 @@ eureka:
       defaultZone: http://localhost:6969/eureka/
 
 #开启Feign对Hystrix支持
+# Hystrix主要功能：服务降级(fallback)  熔断(break)  限流(flowlimimt)
 feign:
   circuitbreaker:
     enabled: true
@@ -28,3 +29,12 @@ management:
 info:
   app-name: spring-cloud-demo-server
   company.addr: www.yurihentai.xyz
+
+# OpenFeign调用时有超时控制  默认如果超过1s没有得到响应 则会报错timeout
+ribbon:
+  ReadTimeout: 5000
+  ConnectionTimeout: 5000
+logging:
+  level:
+    # 指定feign要监控监控的接口  以及日志级别
+    xyz.yurihentai.springcloud.client.feign.*: debug
