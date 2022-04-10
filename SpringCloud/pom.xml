@@ -19,6 +19,7 @@
 
     <modules>
         <module>eureka/spring-cloud-demo-server</module>
+        <module>eureka/spring-cloud-demo-gateway</module>
         <!-- 使用eureka作为注册中心 -->
         <module>eureka/spring-cloud-demo-eureka-registry</module>
         <module>eureka/spring-cloud-demo-eureka-provider-first</module>

@@ -1,0 +1,39 @@
+# 主要功能包括 反向代理 熔断 流量控制 日志监控等  底层使用了Webflux和netty，异步非阻塞
+server:
+  port: 6666
+
+spring:
+  application:
+    name: cloud-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true # 是否从注册中心获取服务列表(通过服务名)
+      routes: # 路由
+        - id: provider-first      # 路由的ID，要求唯一   通过localhost:6666/provider-first/test即可访问到指定uri
+      # 匹配成功后真正请求的地址
+      # uri: http://localhost:8001  # 直接地址
+      uri: lb://cloud-provider-first # 动态从注册中心获取服务列表，默认轮询 格式 lb://服务名 (lb:load balance)
+      predicates: # 断言，请求时先判断，只处理断言结果为true的请求
+        - Path=/test/**    # 对路径匹配的请求进行路由转发
+        - Before=2020-02-05T15:10:03.685+08:00[Asia/Shanghai] # 请求时间在指定时间之前
+        - After=2020-02-05T15:10:03.685+08:00[Asia/Shanghai]  # 请求时间在指定时间之后
+        # 请求时间在指定时间范围内
+        - Between=2020-02-02T17:45:06.206+08:00[Asia/Shanghai],2020-03-25T18:59:06.206+08:00[Asia/Shanghai]
+        - Cookie=ck,zzyy # 请求必须包含指定的 名为 ck 值为 Yuri 的cookie  值可以指定正则表达式
+        - Header=X-Yuri, \d+ # 请求必须包含指定的请求头  X-Yuri 并且值为整数
+        - Host=**.yurihentai.xyz # 指定请求方的的Host信息必须为 **.yurihentai.xyz  如:www.yurihentai.xyz
+        - Method=GET # 指定请求的发送方式必须为GET
+        - Query=username, \d+  # 请求必须包含参数username 并且参数值值是整数
+      # 过滤
+      filter:
+        - AddRequestParameter=X-Request-Id,1024 # 过滤器工厂会为匹配的请求加上一对请求头，名称为X-Request-Id 值为1024
+eureka:
+  instance:
+    instance-id: cloud-gateway-service
+  client:
+    service-url:
+      register-with-eureka: true
+      fetch-registry: true
+      defaultZone: http://localhost.com:7001/eureka
