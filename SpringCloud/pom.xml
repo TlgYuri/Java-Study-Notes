@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.2</version>xyz.yurihentai.springcloud.server
+        <version>2.4.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -18,18 +18,22 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>eureka/spring-cloud-demo-server</module>
-        <module>eureka/spring-cloud-demo-gateway</module>
         <!-- 使用eureka作为注册中心 -->
         <module>eureka/spring-cloud-demo-eureka-registry</module>
         <module>eureka/spring-cloud-demo-eureka-provider-first</module>
         <module>eureka/spring-cloud-demo-eureka-provider-second</module>
+        <module>eureka/spring-cloud-demo-server</module>
         <!-- 使用zookeeper作为注册中心 -->
         <module>zookeeper/spring-cloud-demo-zookeeper-provider</module>
         <module>zookeeper/spring-cloud-demo-zookeeper-consumer</module>
         <!-- 使用consul作为注册中心 -->
         <module>consul/spring-cloud-demo-consul-provider</module>
         <module>consul/spring-cloud-demo-consul-consumer</module>
+        <!-- spring cloud gateway -->
+        <module>eureka/spring-cloud-demo-gateway</module>
+        <!-- spring cloud config -->
+        <module>eureka/spring-cloud-demo-config-center</module>
+        <module>eureka/spring-cloud-demo-config-customer</module>
     </modules>
 
     <properties>

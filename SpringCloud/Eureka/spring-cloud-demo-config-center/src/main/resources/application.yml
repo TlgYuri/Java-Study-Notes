@@ -1,0 +1,43 @@
+server:
+  port: 7000
+
+spring:
+  application:
+    name: cloud-config-center
+  cloud:
+    config:
+      server:
+        git:
+          # git仓库的克隆地址
+          uri: https://gitee.com/tlg-yuri/spring-cloud-config-test.git
+          search-paths: # 要搜索的目录 如果找不到会从根目录找
+            - spring-cloud-config-test
+            - consumer
+          force-pull: true # 强制从拉取
+          # 非公开的git项目需要验证身份  使用 账号密码 或 ssh
+          # username:  # git用户名
+          # password:  # git密码
+          default-label: master
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+#    region: region1
+#    availability-zones:
+#      region1: region1-zone1
+    service-url:
+      defaultZone: http://192.168.0.114:11451/eureka
+  instance:
+#    metadata-map:
+#      # 属于那个zone
+#      zone: region1-zone1
+    prefer-ip-address: true
+    ip-address: peer2
+    instance-id: cloud-config-center
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

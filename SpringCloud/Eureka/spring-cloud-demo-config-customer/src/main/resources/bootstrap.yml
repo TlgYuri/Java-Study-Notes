@@ -1,0 +1,46 @@
+# bootstrap.yml加载优先级高于application.yml
+# 但是属性以后加载为主，如果有相同配置则以application.yml为准
+# 新版本要使用bootstrap.yml 需要手动引入依赖 spring-cloud-starter-bootstrap
+server:
+  port: 7001
+
+spring:
+  application:
+    name: cloud-config-consumer
+  cloud:
+    # spring cloud config客户端配置 读取master分支上的 consumer-dev.yml
+    # 相当于 http://localhost:7000/master/consumer-dev.yml
+    config:
+      label: master # 分支名称
+      name: consumer # 配置文件名称
+      profile: dev # 读取后缀名称
+      uri: http://localhost:7000 # 配置中心地址
+#      discovery:
+#        enabled: true
+#        service-id: cloud-config-center
+    bootstrap:
+      enabled: true
+
+#服务注册到eureka地址
+eureka:
+  client:
+    fetch-registry: true
+    # 是否倾向从同一个zone获取服务（需要关闭注册中心的自我保护机制，否则服务不会失效，只会一直调用同一个zone
+    # prefer-same-zone-eureka: false
+    service-url:
+      defaultZone: http://192.168.0.114:11451/eureka
+  instance:
+#    metadata-map:
+#      # 属于那个zone
+#      zone: region1-zone1
+    prefer-ip-address: true
+    ip-address: peer1
+    instance-id: cloud-config-consumer
+
+# 暴露actuator的监控端点  用于动态刷新配置
+# curl -X POST http://host:port/actuator/refresh
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

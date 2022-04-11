@@ -3,20 +3,36 @@ spring:
       name: spring-cloud-registry
 
 server:
-  port: 6969
+  port: 11451
 
 eureka:
   instance:
     # 集群时多个注册中心不能为同一个host
     hostname: localhost
+    ip-address: 192.168.0.114
+    prefer-ip-address: true
   client:
-    #是否注册到注册中心  本服务作为注册中心，因此false
+    #是否注册到注册中心
     register-with-eureka: false
     #是否获取注册中心注册的其他服务的服务地址
-    fetch-registry: false
+    fetch-registry: true
+    # 分区相关 https://blog.csdn.net/SuperBins/article/details/101376604
+    # 配置当前注册中心所属region（集群时多个注册中心可以分不同region
+    # region: region1
+    # region内的所有zone, 逗号分隔，第一个作为自己的zone
+    #availability-zones:
+    #  region1: region1-zone1
+    # 配置集群中除了自己以外的zone
     service-url:
-      # 注册中心配置集群，只需要启动多个，互相注册即可（default-zone自己以外的所有注册中心，多个用逗号分隔）
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
-  # 自我保护机制  防止某些特殊情况下暂时未接受到服务心跳，但服务实际存活  促使不会立即删除服务的注册信息
+      defaultZone: http://${eureka.instance.ip-address}:${server.port}/eureka/
+      # 注册中心配置集群，只需要启动多个，互相注册即可（zone自己以外的所有注册中心，多个用逗号分隔）
+      # region1-zone1: http://${eureka.instance.hostname}:${server.port}/eureka/
+  # 自我保护机制  防止某些特殊情况下暂时未接受到服务心跳，但服务实际存活  此时不会立即删除服务的注册信息
   server:
-    enable-self-preservation: true
+    enable-self-preservation: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
