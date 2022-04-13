@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-@Configuration
+@Configuration(proxyBeanMethods = true) // proxyBeanMethods: 默认为true   如果设为false，此时通过此方法获取实例将新根据方法逻辑生成一个新对象，而非返回容器中的现有对象
 public class DruidMonitorConfig {
 
     //一种获取配置文件数据  手动注入bean的方式
@@ -33,8 +33,10 @@ public class DruidMonitorConfig {
         Map<String, String> initParams = new HashMap<>();
         initParams.put("loginUsername", "admin");
         initParams.put("loginPassword", "123456");
-        initParams.put("allow", "");    // 默认就是允许所有访问
-        initParams.put("deny", "192.114.5.14");//拒绝哪个ip访问
+        // 默认就是允许所有访问
+        initParams.put("allow", "");
+        //拒绝哪个ip访问
+        initParams.put("deny", "192.114.5.14");
         bean.setInitParameters(initParams);
         return bean;
     }

@@ -1,3 +1,6 @@
 spring:
   profiles:
-    active: dev #指定当前激活的配置文件
+    active: dev # 指定当前激活的配置文件
+
+# 开启打印自动配置报告  开启后会输出自动配置相关的日志
+debug: true
