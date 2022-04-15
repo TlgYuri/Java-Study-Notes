@@ -31,6 +31,11 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  *     2、按需配置 简单举例 @Condition等
  *       * @ConditionalOnMissingBean 容器中没有指定对象时生效、@ConditionalOnMissingClass 项目中引入了指定类的依赖时才生效、@ConditionalOnMissingClass 项目中没有引入指定类的依赖时生效
  *       * @AutoConfigureAfter 在指定的自动配置类之后开始配置
+ * ========================================================
+ * 启动原理(嵌入式Servlet容器):
+ * SpringBoot 默认使用Tomcat服务器，原生支持 Tomcat, Jetty, or Undertow
+ * 启动类的 main 方法调用 SpringApplication.run 方法  向下追一下执行过程就好
+ * 核心: ServletWebServerApplicationContext 容器启动 寻找 ServletWebServerFactory 并引导创建服务器
  */
 @SpringBootApplication
 public class MySpringBootApplication {
