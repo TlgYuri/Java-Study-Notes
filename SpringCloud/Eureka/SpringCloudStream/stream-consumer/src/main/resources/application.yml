@@ -1,9 +1,9 @@
 server:
-  port: 8801
+  port: 8802
 
 spring:
   application:
-    name: cloud-stream-provider
+    name: cloud-stream-consumer
   cloud:
     stream:
       binders: # 在此处配置要绑定的rabbitmq的服务信息；
@@ -17,9 +17,10 @@ spring:
                 username: guest
                 password: guest
       bindings: # 服务的整合处理
-        output: # 这是一个自定义的通道的名称
+        input: # 这是一个自定义的通道的名称
           destination: testExchange # 表示要使用的Exchange名称定义
-          content-type: application/json # 设置消息类型，本次为json，文本则设置“text/plain”
+          content-type: application/json # 设置消息类型，本次为对象json，如果是文本则设置“text/plain”
+          group: groupA # 消费端通过group分组，如果消费端不在同一个group下，消息会被多次消费   并且如果不指定group，将无法获取到在消费端掉线时生产端生产的消息
           # binder: defaultRabbit # 设置要绑定的消息服务的具体设置
 
 eureka:
@@ -31,3 +32,6 @@ eureka:
     lease-expiration-duration-in-seconds: 5 # 服务失效时间（默认是90秒）
     instance-id: stream-provider
     prefer-ip-address: true
+
+
+

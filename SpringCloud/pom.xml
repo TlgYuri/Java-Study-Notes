@@ -35,6 +35,7 @@
         <module>Eureka/SpringCloudConfig/spring-cloud-demo-config-center</module>
         <module>Eureka/SpringCloudConfig/spring-cloud-demo-config-customer</module>
         <module>Eureka/SpringCloudStream/stream-provider</module>
+        <module>Eureka/SpringCloudStream/stream-consumer</module>
     </modules>
 
     <properties>
