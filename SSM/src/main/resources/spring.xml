@@ -18,7 +18,7 @@
     <context:property-placeholder ignore-unresolvable="true"  location="classpath:application.properties"/>
 
     <!-- 组件扫描 -->
-    <context:component-scan base-package="xyz.yurihentai">
+    <context:component-scan base-package="cn.yurihentai">
         <!-- <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/> -->
     </context:component-scan>
 
@@ -57,7 +57,7 @@
                   value="classpath:mybatis.xml"/>
         <!-- MyBatis的SQL映射文件 -->
         <property name="mapperLocations" value="classpath:/mapper/xml/*.xml"/>
-        <property name="typeAliasesPackage" value="xyz.yurihentai.bean"/>
+        <property name="typeAliasesPackage" value="cn.yurihentai.bean"/>
         <property name="plugins">
             <array>
                 <!-- 传入插件的对象 -->
@@ -81,10 +81,10 @@
         MapperScannerConfigurer 为指定包下的Mapper接口批量生成代理实现类.bean的默认id是接口名首字母小写.
      -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="xyz.yurihentai.mapper"/>
+        <property name="basePackage" value="cn.yurihentai.mapper"/>
     </bean>
 
-     <mybatis-spring:scan base-package="xyz.yurihentai.mapper"/>
+     <mybatis-spring:scan base-package="cn.yurihentai.mapper"/>
 
     <!-- 开启全局基于注解的方法级别访问控制（org.springframework.security.access.intercept.aopalliance.MethodSecurityInterceptor -->
     <!-- 通过配置类注解开启 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled=true, proxyTargetClass = true)-->

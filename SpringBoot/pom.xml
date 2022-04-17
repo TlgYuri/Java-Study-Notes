@@ -11,7 +11,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>xyz.yurihentai</groupId>
+    <groupId>cn.yurihentai</groupId>
     <artifactId>spring-boot</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 

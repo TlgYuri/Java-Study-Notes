@@ -28,7 +28,7 @@ management:
 
 info:
   app-name: spring-cloud-demo-server
-  company.addr: www.yurihentai.xyz
+  company.addr: www.yurihentai.cn
 
 # OpenFeign调用时有超时控制  默认如果超过1s没有得到响应 则会报错timeout
 ribbon:
@@ -37,4 +37,4 @@ ribbon:
 logging:
   level:
     # 指定feign要监控监控的接口  以及日志级别
-    xyz.yurihentai.springcloud.client.feign.*: debug
+    cn.yurihentai.springcloud.client.feign.*: debug

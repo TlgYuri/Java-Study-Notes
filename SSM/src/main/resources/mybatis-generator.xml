@@ -35,7 +35,7 @@
 
         <!-- targetpakage是即将生成的目录，targetProject是对应的前缀目录。可根据自己需求生到对应目录。下次运行会直接默认覆盖原来位置的文件 -->
         <!-- 生成模型的包名和位置   映射实体类的位置 -->
-        <javaModelGenerator targetPackage="xyz.yurihentai.bean"
+        <javaModelGenerator targetPackage="cn.yurihentai.bean"
                             targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
@@ -48,7 +48,7 @@
         </sqlMapGenerator>
 
         <!-- 生成DAO的包名和位置   mapper接口-->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="xyz.yurihentai.mapper"
+        <javaClientGenerator type="XMLMAPPER" targetPackage="cn.yurihentai.mapper"
                              targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>

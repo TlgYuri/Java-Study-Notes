@@ -11,7 +11,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>xyz.yurihentai.frameworktest.springcloud</groupId>
+    <groupId>cn.yurihentai.frameworktest.springcloud</groupId>
     <artifactId>spring-cloud-demo-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
 
@@ -34,6 +34,7 @@
         <!-- spring cloud config -->
         <module>eureka/spring-cloud-demo-config-center</module>
         <module>eureka/spring-cloud-demo-config-customer</module>
+        <module>Eureka/SpringCloudStream/stream-provider</module>
     </modules>
 
     <properties>

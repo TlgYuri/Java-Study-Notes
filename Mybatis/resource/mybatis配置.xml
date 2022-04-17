@@ -52,10 +52,10 @@
     </settings>
 
     <typeAliases>
-        <typeAlias type="xyz.yurihentai.实体类.用户" alias="用户"/>
-        <typeAlias type="xyz.yurihentai.实体类.用户信息" alias="用户信息"/>
-        <typeAlias type="xyz.yurihentai.枚举.性别枚举" alias="性别枚举"/>
-        <typeAlias type="xyz.yurihentai.处理器.Mybatis类型处理器.性别枚举处理器" alias="性别枚举处理器"/>
+        <typeAlias type="cn.yurihentai.实体类.用户" alias="用户"/>
+        <typeAlias type="cn.yurihentai.实体类.用户信息" alias="用户信息"/>
+        <typeAlias type="cn.yurihentai.枚举.性别枚举" alias="性别枚举"/>
+        <typeAlias type="cn.yurihentai.处理器.Mybatis类型处理器.性别枚举处理器" alias="性别枚举处理器"/>
         <!-- <package name="com.yuri"/>--> <!-- 为这个包下的所有类创建别名  如com.yuri.UserInfo别名是userInfo-->
     </typeAliases>
 

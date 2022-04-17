@@ -1,0 +1,17 @@
+package cn.yurihentai.实体类.基类;
+
+import lombok.Data;
+
+import java.io.Serializable;
+import java.util.Date;
+
+@Data
+public class 实体基类 implements Serializable {
+
+    private String 编号;
+
+    private Date 创建时间;
+
+    private Date 修改时间;
+
+}

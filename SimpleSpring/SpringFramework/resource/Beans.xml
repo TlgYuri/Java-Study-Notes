@@ -11,15 +11,15 @@
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:util="http://www.springframework.org/schema/util"
 >
-    <bean id="org.yuri" class="xyz.yurihentai.bean.Person" scope="prototype" init-method="init" destroy-method="destroy">
+    <bean id="org.yuri" class="cn.yurihentai.bean.Person" scope="prototype" init-method="init" destroy-method="destroy">
         <property name="name" value="Yuri"/>
         <property name="hobby" ref="hobby"/>
         <property name="relation" ref="relation"/>
     </bean>
     <!--    <bean id="hello" class="org.org.yuri.bean.Hello" scope="prototype" p:name="Yuri"></bean>-->
-    <bean class="xyz.yurihentai.handler.MyPostProcessor"/>
+    <bean class="cn.yurihentai.handler.MyPostProcessor"/>
 
-    <bean id="factoryBean" class="xyz.yurihentai.bean.PersonFactoryBean" init-method="init" destroy-method="destroy"/>
+    <bean id="factoryBean" class="cn.yurihentai.bean.PersonFactoryBean" init-method="init" destroy-method="destroy"/>
 
     <util:list id="hobby">
         <value>手コキ</value>
@@ -49,10 +49,10 @@
         <entry key="daughter" value-ref="daughter"/>
     </util:map>
 
-    <bean id="daughter" class="xyz.yurihentai.bean.Person" p:name="daughter" init-method="init" destroy-method="destroy"/>
-    <bean id="wife" class="xyz.yurihentai.bean.Person" p:name="wife" init-method="init" destroy-method="destroy"/>
-    <bean id="sister" class="xyz.yurihentai.bean.Person" p:name="sister" init-method="init" destroy-method="destroy"/>
-    <bean id="mother" class="xyz.yurihentai.bean.Person" p:name="mother" init-method="init" destroy-method="destroy"/>
+    <bean id="daughter" class="cn.yurihentai.bean.Person" p:name="daughter" init-method="init" destroy-method="destroy"/>
+    <bean id="wife" class="cn.yurihentai.bean.Person" p:name="wife" init-method="init" destroy-method="destroy"/>
+    <bean id="sister" class="cn.yurihentai.bean.Person" p:name="sister" init-method="init" destroy-method="destroy"/>
+    <bean id="mother" class="cn.yurihentai.bean.Person" p:name="mother" init-method="init" destroy-method="destroy"/>
 
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
         <property name="driverClass" value="com.mysql.cj.jdbc.Driver"/>

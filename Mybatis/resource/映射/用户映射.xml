@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="xyz.yurihentai.映射.用户映射">
+<mapper namespace="cn.yurihentai.映射.用户映射">
 
     <resultMap id="用户加用户信息" type="用户">
         <id column="编号" property="编号"/>
@@ -13,7 +13,7 @@
         <result column="创建时间" property="创建时间"/>
         <result column="修改时间" property="修改时间"/>
         <!-- 使用查询结果进行查询，将查询结果作为指定属性的值 -->
-        <association column="编号" property="用户信息" select="xyz.yurihentai.映射.用户信息映射.查找" fetchType="eager"/>
+        <association column="编号" property="用户信息" select="cn.yurihentai.映射.用户信息映射.查找" fetchType="eager"/>
     </resultMap>
 
     <resultMap id="用户级联用户信息" type="用户">

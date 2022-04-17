@@ -23,7 +23,7 @@ spring:
         - Between=2020-02-02T17:45:06.206+08:00[Asia/Shanghai],2020-03-25T18:59:06.206+08:00[Asia/Shanghai]
         - Cookie=ck,zzyy # 请求必须包含指定的 名为 ck 值为 Yuri 的cookie  值可以指定正则表达式
         - Header=X-Yuri, \d+ # 请求必须包含指定的请求头  X-Yuri 并且值为整数
-        - Host=**.yurihentai.xyz # 指定请求方的的Host信息必须为 **.yurihentai.xyz  如:www.yurihentai.xyz
+        - Host=**.yurihentai.cn # 指定请求方的的Host信息必须为 **.yurihentai.cn  如:www.yurihentai.cn
         - Method=GET # 指定请求的发送方式必须为GET
         - Query=username, \d+  # 请求必须包含参数username 并且参数值值是整数
       # 过滤
