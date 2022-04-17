@@ -1,0 +1,26 @@
+# nacos配置
+server:
+  port: 6666
+
+spring:
+  application:
+    name: nacos-config-client
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848 # Nacos服务注册中心的地址
+      config:
+        server-addr: localhost:8848 # Nacos作为配置中心
+        file-extension: yml # 指定配置文件的格式
+        # 文件名的格式规则为 ${nacos.config.prefix}-${spring.profile.active}.${spring.cloud.nacos.config.file-extension}
+        # 如果不指定prefix 则默认使用spring.application.name作为前缀
+        prefix: nacos-config-client
+        # namespace包含多个group，group中添加多个配置文件  可以通过 namespace、group、profiles.active区分不同环境的配置文件
+        # namespace的id可以在创建时自定义，也可以交由nacos自动生成
+        namespace: 1145141919810
+        # 创建配置文件时可以指定分组名由nacos自动创建group，否则默认DEFAULT_GROUP
+        group: TSHE_GROUP
+
+
+
+

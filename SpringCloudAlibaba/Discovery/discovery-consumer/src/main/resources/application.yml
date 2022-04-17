@@ -1,0 +1,15 @@
+server:
+  port: 9002
+
+spring:
+  application:
+    name: nacos-consumer
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848 #  Nacos地址
+
+
+# 成功注册进nacos的微服务提供者
+service-url:
+  nacos-use-service: http://nacos-provider
