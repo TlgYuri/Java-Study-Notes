@@ -1,0 +1,25 @@
+server:
+  port: 8002
+
+spring:
+  application:
+    name: cloud-sleuth-consumer
+  zipkin: # zipkin的服务地址 需要下载zipkin的服务 单独启动
+    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+      # 采样率 值介于 0 到 1 之间，1表示全部采集
+      probability: 1
+
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetchRegistry: true
+    service-url:
+      defaultZone: http://localhost:11451/eureka
+  instance:
+    instance-id: sleuth-consumer
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 3
+    lease-expiration-duration-in-seconds: 9

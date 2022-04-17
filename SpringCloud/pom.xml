@@ -36,6 +36,8 @@
         <module>Eureka/SpringCloudConfig/spring-cloud-demo-config-customer</module>
         <module>Eureka/SpringCloudStream/stream-provider</module>
         <module>Eureka/SpringCloudStream/stream-consumer</module>
+        <module>Eureka/SpringCloudSleuth/sleuth-test-provider</module>
+        <module>Eureka/SpringCloudSleuth/sleuth-test-consumer</module>
     </modules>
 
     <properties>
