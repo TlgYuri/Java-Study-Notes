@@ -18,6 +18,7 @@
         <module>Discovery/discovery-provider</module>
         <module>Discovery/discovery-consumer</module>
         <module>Config/config-client</module>
+        <module>sentinel-service</module>
     </modules>
 
     <packaging>pom</packaging>

@@ -1,0 +1,50 @@
+# sentinel 1.6 开始提供了 Spring Cloud Gateway 的适配模块 可以与 gateway 整合
+server:
+  port: 8401
+
+spring:
+  application:
+    name: cloudalibaba-sentinel-service
+  cloud:
+    nacos:
+      discovery:
+        #Nacos服务注册中心地址
+        server-addr: localhost:8848
+    sentinel:
+      transport:
+        # 配置Sentinel dashboard地址(Sentinel是懒加载 请求路径被访问过一次以后才会被监控)
+        dashboard: localhost:8080
+        # 指定应用与Sentinel控制台交互的端口，会在本地起一个HttpServer使用该端口与sentinel交互
+        # 默认8719端口，假如被占用会自动从8719开始依次+1扫描,直至找到未被占用的端口
+        port: 8720
+          datasource: # 把规则配置在nacos中
+            ds1:
+              nacos:
+                server-addr: ${spring.cloud.nacos.discovery.server-addr}
+                dataId: ${spring.application.name}
+                groupId: DEFAULT_GROUP
+                data-type: json
+                rule-type: flow
+
+# 配置sentinel规则
+#  [
+#  {
+#    "resource": "/rateLimit/byUrl", # 资源名称
+#    "limitApp": "default", # 来源应用
+#    "grade": 1, # 阈值类型，0表示线程数，1表示QPS
+#    "count": 1, # 单机阈值
+#    "strategy": 0, # 流控模式，0表示直接，1表示关联，2表示链路
+#    "controlBehavior": 0, # 流控效果，0表示快速失败，1表示Warm Up，2表示排队等待
+#    "clusterMode": false # 是否集群
+#  }
+#  ]
+
+feign:
+  sentinel:
+    enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
