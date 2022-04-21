@@ -15,10 +15,16 @@
     <artifactId>spring-cloud-alibaba-paraent</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
+        <!-- nacos做注册中心、服务配置等 -->
         <module>Discovery/discovery-provider</module>
         <module>Discovery/discovery-consumer</module>
         <module>Config/config-client</module>
+        <!-- sentinel 服务监控、熔断降级、限流、授权 -->
         <module>sentinel-service</module>
+        <!-- seata分布式事务 -->
+        <module>Seata/seata-test-order-first</module>
+        <module>Seata/seata-test-storage-second</module>
+        <module>Seata/seata-test-account-third</module>
     </modules>
 
     <packaging>pom</packaging>

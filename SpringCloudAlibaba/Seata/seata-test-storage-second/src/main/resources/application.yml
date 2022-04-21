@@ -1,0 +1,52 @@
+server:
+  port: 6902
+
+spring:
+  application:
+    name: seata-service-storage
+  cloud:
+    alibaba:
+      seata:
+        # 自定义事务组名称需要与seata-server中的对应
+        tx-service-group: lsp_tx_group
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        group: SEATA_GROUP
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    #url: jdbc:mysql://localhost:3306/seata_storage?useAffectedRows=true
+    url: jdbc:mysql://121.41.203.19:3306/seata_storage?useAffectedRows=true
+    username: root
+    password: Yuri
+
+seata:
+  enabled: true
+  enable-auto-data-source-proxy: true
+  config:
+    type: nacos
+    nacos:
+      server-addr: localhost:8848
+      group: SEATA_GROUP
+      #namespace:
+  registry:
+    type: nacos
+    nacos:
+      server-addr: localhost:8848
+  service:
+    vgroup-mapping:
+      # 与nacos中配置的事务组名称要保持一致
+      lsp_tx_group: default
+    disable-global-transaction: false
+
+feign:
+  hystrix:
+    enabled: false
+
+logging:
+  level:
+    io:
+      seata: info
+
+mybatis:
+  mapperLocations: classpath:mapper/*.xml
