@@ -1,4 +1,16 @@
 # Java-Study-Notes
+##目的
+记录自己学习过的各种java相关技术框架的使用方式，方便需要时回顾抄写
+
+##包含内容
+Spring
+SpringMVC
+Mybatis
+SSM整合
+SpringBoot
+SpringCloud Netflix
+SpringCloud Alibaba
+
 
 ## 鸣谢
 > [IntelliJ IDEA](https://zh.wikipedia.org/zh-hans/IntelliJ_IDEA) 是一个功能相当强大、能大幅提高开发人员生产力的 IDE。
