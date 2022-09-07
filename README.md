@@ -1,8 +1,8 @@
 # Java-Study-Notes
-##目的
+## 目的
 记录自己学习过的各种java相关技术框架的使用方式，方便需要时回顾抄写
 
-##包含内容
+## 包含内容
 Spring
 SpringMVC
 Mybatis
